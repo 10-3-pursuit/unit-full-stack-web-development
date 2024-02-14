@@ -69,7 +69,7 @@ Now that hotels and their rooms are two separate tables, how can you relate the 
 
 First, the hotels must have a unique identifying field. In this case, a simple integer will be used:
 
-`Hotels Table Updated`
+`Hotels Table (updated)`
 | id | name | city | state | rating | pets |
 | :-: | :------------------: | :--------: | :------------------: | :----: | :--: |
 | 1 | Hotel California | null | California | 4 | true |
