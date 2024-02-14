@@ -34,8 +34,9 @@ You can image a table like so:
 
 But to book a room, you would need information on the rooms available in each hotel. **One** hotel **has many** hotel rooms.
 
-`Hotel Table (with all the rooms in one table)`
 Let's try to put the info in a one table:
+
+`Hotel Table (with all the rooms in one table)`
 
 |      name      |    city    |   state    | rating | pets |        room 1         |           room 2            |       room 3        |
 | :------------: | :--------: | :--------: | :----: | :--: | :-------------------: | :-------------------------: | :-----------------: |
@@ -79,7 +80,7 @@ Next, the rooms will also have a unique id (in the id column).
 
 The hotel rooms can belong to any hotel or no hotel. You can include the hotel id as a field on the hotel rooms.
 
-`Hotel Rooms Table (updated)`
+`Rooms Table (updated)`
 | id | name | price | room_num | vacant | hotel_id |
 | :-: | :-------: | :---: | :------: | :----: | :------: |
 | 10 | Queen | 1200 | 202 | true | 2 |
