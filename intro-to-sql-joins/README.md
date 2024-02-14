@@ -26,13 +26,15 @@ Let's imagine you are designing an application for a new boutique travel travel 
 
 You can image a table like so:
 
-|       name       |    city    |   state    | rating | pets |
+`Hotel Table`
+| name | city | state | rating | pets |
 | :--------------: | :--------: | :--------: | :----: | :--: |
-| Hotel California |    null    | California |   4    | true |
-|  Great Northern  | Twin Peaks | Washington |   3    | true |
+| Hotel California | null | California | 4 | true |
+| Great Northern | Twin Peaks | Washington | 3 | true |
 
 But to book a room, you would need information on the rooms available in each hotel. **One** hotel **has many** hotel rooms.
 
+`Hotel Table (with all the rooms in one table)`
 Let's try to put the info in a one table:
 
 |      name      |    city    |   state    | rating | pets |        room 1         |           room 2            |       room 3        |
@@ -49,11 +51,12 @@ It would be better if there were a separate table for each room.
   - number - integer
   - vacant - boolean
 
-|   name    | price | room_num | vacant |
+`Rooms Table`
+| name | price | room_num | vacant |
 | :-------: | :---: | :------: | :----: |
-|   Queen   | 1200  |   202    |  true  |
-| Penthouse | 10000 |   303    |  true  |
-|   Twin    |  600  |   101    | false  |
+| Queen | 1200 | 202 | true |
+| Penthouse | 10000 | 303 | true |
+| Twin | 600 | 101 | false |
 
 Organizing data into multiple tables to improve updating, inserting, deleting, and reading data is called [database normalization](https://en.wikipedia.org/wiki/Database_normalization).
 
@@ -65,28 +68,24 @@ Now that hotels and their rooms are two separate tables, how can you relate the 
 
 First, the hotels must have a unique identifying field. In this case, a simple integer will be used:
 
-| id  |         name         |    city    |        state         | rating | pets |
+`Hotels Table Updated`
+| id | name | city | state | rating | pets |
 | :-: | :------------------: | :--------: | :------------------: | :----: | :--: |
-|  1  |   Hotel California   |    null    |      California      |   4    | true |
-|  2  |    Great Northern    | Twin Peaks |      Washington      |   3    | true |
-|  3  | Grand Budapest Hotel |    null    | Republic of Zubrowka |   5    | null |
+| 1 | Hotel California | null | California | 4 | true |
+| 2 | Great Northern | Twin Peaks | Washington | 3 | true |
+| 3 | Grand Budapest Hotel | null | Republic of Zubrowka | 5 | null |
 
-Next, the rooms will also have a unique id:
-
-| id  |   name    | price | room_num | vacant |
-| :-: | :-------: | :---: | :------: | :----: |
-| 10  |   Queen   | 1200  |   202    |  true  |
-| 11  | Penthouse | 10000 |   303    |  true  |
-| 12  |   Twin    |  600  |   101    | false  |
+Next, the rooms will also have a unique id (in the id column).
 
 The hotel rooms can belong to any hotel or no hotel. You can include the hotel id as a field on the hotel rooms.
 
-| id  |   name    | price | room_num | vacant | hotel_id |
+`Hotel Rooms Table (updated)`
+| id | name | price | room_num | vacant | hotel_id |
 | :-: | :-------: | :---: | :------: | :----: | :------: |
-| 10  |   Queen   | 1200  |   202    |  true  |    2     |
-| 11  | Penthouse | 10000 |   303    |  true  |    1     |
-| 12  |   Twin    |  600  |   101    | false  |    2     |
-| 13  |   King    | 6000  |   001    | false  |    4     |
+| 10 | Queen | 1200 | 202 | true | 2 |
+| 11 | Penthouse | 10000 | 303 | true | 1 |
+| 12 | Twin | 600 | 101 | false | 2 |
+| 13 | King | 6000 | 001 | false | 4 |
 
 This would allow you to create a query to list all the rooms associated with The Great Northern.
 
