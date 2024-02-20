@@ -291,7 +291,7 @@ app.get('/colors/oops/:index', (req, res) => {
   const { index } = req.params
   res.json({ color: colors[index] })
   // error cannot send more than one response!
-  res.json({ message: 'This is the index: ' + index })
+  res.json({ message: `This is the index: ${index}` })
 })
 ```
 
@@ -304,7 +304,7 @@ app.get('/colors/:index', (req, res) => {
   if (colors[index]) {
     res.json({ color: colors[index] })
   } else {
-    res.json({ message: `Cannot find any colors at this index: ' ${index}` })
+    res.json({ message: `Cannot find any colors at this index: ${index}` })
   }
 })
 ```
