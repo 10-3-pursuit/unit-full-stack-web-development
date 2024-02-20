@@ -389,7 +389,7 @@ We can add more parameters to the `req.params` object:
 ```js
 app.get('/hello/:user/:food', (req, res) => {
   console.log(req.params)
-  const { firstName, lastName } = req.params
+  const { user, food } = req.params
   res.send(`My name is ${user} and my favorite food is ${food}`)
 })
 ```
