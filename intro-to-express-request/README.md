@@ -82,7 +82,7 @@ node_modules
 To use environmental variables, you'll add a new npm package [dotenv](https://www.npmjs.com/package/dotenv)
 
 - `touch .env`
-- `npm install dotenv@16`
+- `npm install dotenv`
 
 - Open `.env` add:
 
@@ -227,7 +227,7 @@ app.get('/', (req, res) => {
 
 // Index route
 app.get('/colors', (req, res) => {
-  res.send(colors)
+  res.json({ colors })
 })
 
 // EXPORT
@@ -254,7 +254,7 @@ Whatever value the user types will then be sent with the request and is accessib
 ```js
 // ROUTES
 app.get('/colors/:index', (req, res) => {
-  res.send(req.params)
+  console.log(req.params.index)
 })
 ```
 
@@ -265,7 +265,7 @@ http://localhost:3333/colors/1
 ```js
 // ROUTES
 app.get('/colors/:index', (req, res) => {
-  res.send(colors[req.params.index])
+  res.json({ color: colors[req.params.index] })
 })
 ```
 
@@ -277,7 +277,7 @@ You can make this code easier to read by using object destructuring.
 // Show one color
 app.get('/colors/:index', (req, res) => {
   const { index } = req.params
-  res.send(colors[index])
+  res.json({ color: colors[index] })
 })
 ```
 
@@ -289,9 +289,9 @@ You can only have one response for every request: This is a rule of the http pro
 // A route with an error
 app.get('/colors/oops/:index', (req, res) => {
   const { index } = req.params
-  res.send(colors[index])
+  res.json({ color: colors[index] })
   // error cannot send more than one response!
-  res.send('This is the index: ' + index)
+  res.json({ message: 'This is the index: ' + index })
 })
 ```
 
@@ -302,9 +302,9 @@ You can, however, have multiple statements if you use `if` statements or other p
 app.get('/colors/:index', (req, res) => {
   const { index } = req.params
   if (colors[index]) {
-    res.send(colors[index])
+    res.json({ color: colors[index] })
   } else {
-    res.send('Cannot find any colors at this index: ' + index)
+    res.json({ message: `Cannot find any colors at this index: ' ${index}` })
   }
 })
 ```
