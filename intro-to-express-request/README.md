@@ -96,10 +96,10 @@ When you want to access the values, you will access them through the `process.en
 
 ```js
 // The whole process.env object
-console.log(process.env);
+console.log(process.env)
 
 // Accessing the value of PORT from the .env file
-console.log(process.env.PORT);
+console.log(process.env.PORT)
 ```
 
 > **Note**: A variable in all caps represents a constant in other coding languages. When you deploy your application, there is usually an expectation that the port is set to a variable name of `PORT`. Therefore, you should begin using this convention now to be able to deploy with ease later.
@@ -114,7 +114,7 @@ You make read or code along. To code along, you can get started with the steps b
 
 - make a new project folder and `cd` into it
 - `touch .gitignore` (and set it up)
-- `npm init`
+- `npm init -y`
 - `npm i express`
 - `touch .env` (make sure you are on the same level as `package.json`)
 - `npm i dotenv@16`
@@ -125,18 +125,18 @@ You make read or code along. To code along, you can get started with the steps b
 
 ```js
 // DEPENDENCIES
-const express = require("express");
+const express = require('express')
 
 // CONFIGURATION
-const app = express();
+const app = express()
 
 // ROUTES
-app.get("/", (req, res) => {
-  res.send("Welcome to my Express app");
-});
+app.get('/', (req, res) => {
+  res.send('Welcome to my Express app')
+})
 
 // EXPORT
-module.exports = app;
+module.exports = app
 ```
 
 ### Set up the server
@@ -145,16 +145,16 @@ module.exports = app;
 
 ```js
 // DEPENDENCIES
-const app = require("./app.js");
+const app = require('./app.js')
 
 // CONFIGURATION
-require("dotenv").config();
-const PORT = process.env.PORT;
+require('dotenv').config()
+const PORT = process.env.PORT
 
 // LISTEN
 app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
-});
+  console.log(`Listening on port ${PORT}`)
+})
 ```
 
 Get the app running with `nodemon server.js` and go to http://localhost:3333
@@ -185,13 +185,13 @@ Remember, you need to leave your server running. To open a new Terminal tab, you
 
 ```js
 module.exports = [
-  "MistyRose",
-  "Coral",
-  "Goldenrod",
-  "MediumAquamarine",
-  "DeepSkyBlue",
-  "Violet",
-];
+  'MistyRose',
+  'Coral',
+  'Goldenrod',
+  'MediumAquamarine',
+  'DeepSkyBlue',
+  'Violet',
+]
 ```
 
 Then the data must be exported with `module.exports` so it can import it elsewhere in your app.
@@ -214,24 +214,24 @@ To access the data, you can import the colors array into `app.js`.
 ```js
 // app.js
 // DEPENDENCIES
-const express = require("express");
-const colors = require("./models/color.js");
+const express = require('express')
+const colors = require('./models/color.js')
 
 // CONFIGURATION
-const app = express();
+const app = express()
 
 // ROUTES
-app.get("/", (req, res) => {
-  res.send("Welcome to My Express App");
-});
+app.get('/', (req, res) => {
+  res.send('Welcome to My Express App')
+})
 
 // Index route
-app.get("/colors", (req, res) => {
-  res.send(colors);
-});
+app.get('/colors', (req, res) => {
+  res.send(colors)
+})
 
 // EXPORT
-module.exports = app;
+module.exports = app
 ```
 
 http://localhost:3333/colors
@@ -253,9 +253,9 @@ Whatever value the user types will then be sent with the request and is accessib
 
 ```js
 // ROUTES
-app.get("/colors/:index", (req, res) => {
-  res.send(req.params);
-});
+app.get('/colors/:index', (req, res) => {
+  res.send(req.params)
+})
 ```
 
 You can now use this value to access the item in the array's position 1.
@@ -264,9 +264,9 @@ http://localhost:3333/colors/1
 
 ```js
 // ROUTES
-app.get("/colors/:index", (req, res) => {
-  res.send(colors[req.params.index]);
-});
+app.get('/colors/:index', (req, res) => {
+  res.send(colors[req.params.index])
+})
 ```
 
 You can make this code easier to read by using object destructuring.
@@ -275,10 +275,10 @@ You can make this code easier to read by using object destructuring.
 // ROUTES
 
 // Show one color
-app.get("/colors/:index", (req, res) => {
-  const { index } = req.params;
-  res.send(colors[index]);
-});
+app.get('/colors/:index', (req, res) => {
+  const { index } = req.params
+  res.send(colors[index])
+})
 ```
 
 ## A common error
@@ -287,26 +287,26 @@ You can only have one response for every request: This is a rule of the http pro
 
 ```js
 // A route with an error
-app.get("/colors/oops/:index", (req, res) => {
-  const { index } = req.params;
-  res.send(colors[index]);
+app.get('/colors/oops/:index', (req, res) => {
+  const { index } = req.params
+  res.send(colors[index])
   // error cannot send more than one response!
-  res.send("This is the index: " + index);
-});
+  res.send('This is the index: ' + index)
+})
 ```
 
 You can, however, have multiple statements if you use `if` statements or other program logic correctly:
 
 ```js
 // Show one color, with error handling
-app.get("/colors/:index", (req, res) => {
-  const { index } = req.params;
+app.get('/colors/:index', (req, res) => {
+  const { index } = req.params
   if (colors[index]) {
-    res.send(colors[index]);
+    res.send(colors[index])
   } else {
-    res.send("Cannot find any colors at this index: " + index);
+    res.send('Cannot find any colors at this index: ' + index)
   }
-});
+})
 ```
 
 http://localhost:3333/colors/98
@@ -337,49 +337,49 @@ Here is a code example, building on the app you have so far:
 
 ```javascript
 // Show one color
-app.get("/colors/:index", (req, res) => {
-  const { index } = req.params;
+app.get('/colors/:index', (req, res) => {
+  const { index } = req.params
   if (colors[index]) {
-    res.send(colors[index]);
+    res.send(colors[index])
   } else {
-    res.send("Cannot find any colors at this index: " + index);
+    res.send('Cannot find any colors at this index: ' + index)
   }
-});
+})
 
 // This will never be reached
-app.get("/colors/cool", (req, res) => {
+app.get('/colors/cool', (req, res) => {
   res.send(`
  <body
  style="background: linear-gradient(to bottom, ${colors[0]} 16%, ${colors[1]} 32%, ${colors[2]} 48%, ${colors[3]} 64%, ${colors[4]} 80%, ${colors[5]} 100%)"
  >
  <h1>Colors are cool!</h1>
  </body>
- `);
-});
+ `)
+})
 ```
 
 When you have this situation, reorder the routes so that the more specific routes come before less particular routes (those with params in them).
 
 ```javascript
-app.get("/colors/cool", (req, res) => {
+app.get('/colors/cool', (req, res) => {
   res.send(`
  <body
  style="background: linear-gradient(to bottom, ${colors[0]} 16%, ${colors[1]} 32%, ${colors[2]} 48%, ${colors[3]} 64%, ${colors[4]} 80%, ${colors[5]} 100%)"
  >
  <h1>Colors are cool!</h1>
  </body>
- `);
-});
+ `)
+})
 
 // Show one color
-app.get("/colors/:index", (req, res) => {
-  const { index } = req.params;
+app.get('/colors/:index', (req, res) => {
+  const { index } = req.params
   if (colors[index]) {
-    res.send(colors[index]);
+    res.send(colors[index])
   } else {
-    res.send("cannot find anything at this index: " + index);
+    res.send('cannot find anything at this index: ' + index)
   }
-});
+})
 ```
 
 ## Multiple Parameters
@@ -387,11 +387,11 @@ app.get("/colors/:index", (req, res) => {
 We can add more parameters to the `req.params` object:
 
 ```js
-app.get("/hello/:user/:food", (req, res) => {
-  console.log(req.params);
-  const { firstName, lastName } = req.params;
-  res.send(`My name is ${user} and my favorite food is ${food}`);
-});
+app.get('/hello/:user/:food', (req, res) => {
+  console.log(req.params)
+  const { firstName, lastName } = req.params
+  res.send(`My name is ${user} and my favorite food is ${food}`)
+})
 ```
 
 http://localhost:3333/hello/neo/pizza
@@ -407,12 +407,12 @@ Query strings go at the end of a path and start with a `?`. They are key-value p
 You can add as many as you like by separating them with an ampersand `&`. You don't need to create a new route for them. The data can still be passed into the base route.
 
 ```js
-app.get("/calculator/:operator", (req, res) => {
-  console.log("This is req.params", req.params);
-  console.log("This is req.query", req.query);
-  const sum = req.query.num1 + req.query.num2;
-  res.send("sum is " + sum);
-});
+app.get('/calculator/:operator', (req, res) => {
+  console.log('This is req.params', req.params)
+  console.log('This is req.query', req.query)
+  const sum = req.query.num1 + req.query.num2
+  res.send('sum is ' + sum)
+})
 ```
 
 http://localhost:3333/calculator/add?num1=5&num2=4
@@ -420,24 +420,24 @@ http://localhost:3333/calculator/add?num1=5&num2=4
 Uh oh! The sum is 54 instead of 9. Remember, incoming requests always come in as strings. Therefore they must be converted to numbers.
 
 ```js
-app.get("/calculator/:operator", (req, res) => {
-  const { num1, num2 } = req.query;
-  const sum = Number(num1) + Number(num2);
-  res.send("sum is " + sum);
-});
+app.get('/calculator/:operator', (req, res) => {
+  const { num1, num2 } = req.query
+  const sum = Number(num1) + Number(num2)
+  res.send('sum is ' + sum)
+})
 ```
 
 Let's add a bit more logic.
 
 ```js
-app.get("/calculator/:operator", (req, res) => {
-  const { num1, num2 } = req.query;
-  let sum = 0;
-  if (req.params.operator === "add") {
-    sum = Number(num1) + Number(num2);
+app.get('/calculator/:operator', (req, res) => {
+  const { num1, num2 } = req.query
+  let sum = 0
+  if (req.params.operator === 'add') {
+    sum = Number(num1) + Number(num2)
   }
-  res.send("sum is " + sum);
-});
+  res.send('sum is ' + sum)
+})
 ```
 
 **Bonus**: Can you figure out how to add the functionality of `subtract`, `multiple`, and `divide`?
@@ -450,32 +450,32 @@ App.js:
 
 ```js
 // DEPENDENCIES
-const express = require("express");
-const colors = require("./models/color.js");
+const express = require('express')
+const colors = require('./models/color.js')
 
 // CONFIGURATION
-const app = express();
+const app = express()
 
 // ROUTES
-app.get("/", (req, res) => {
-  res.send("Welcome to Express Minerals App");
-});
+app.get('/', (req, res) => {
+  res.send('Welcome to Express Minerals App')
+})
 
 // Index route
-app.get("/colors", (req, res) => {
-  res.send(colors);
-});
+app.get('/colors', (req, res) => {
+  res.send(colors)
+})
 
 // Route with an error
-app.get("/colors/oops/:index", (req, res) => {
-  const { index } = req.params;
-  res.send(colors[index]);
+app.get('/colors/oops/:index', (req, res) => {
+  const { index } = req.params
+  res.send(colors[index])
   // error cannot send more than one response!
-  res.send("this is the index: " + index);
-});
+  res.send('this is the index: ' + index)
+})
 
 // Place the route in the correct order
-app.get("/colors/cool", (req, res) => {
+app.get('/colors/cool', (req, res) => {
   //this will never be reached
   res.send(`
  <body
@@ -483,36 +483,36 @@ app.get("/colors/cool", (req, res) => {
  >
  <h1>Colors are cool!</h1>
  </body>
- `);
-});
+ `)
+})
 
 // Dynamic route for one color with error handling
-app.get("/colors/:index", (req, res) => {
-  const { index } = req.params;
+app.get('/colors/:index', (req, res) => {
+  const { index } = req.params
   if (colors[index]) {
-    res.send(colors[index]);
+    res.send(colors[index])
   } else {
-    res.send("Cannot find any colors at this index: " + index);
+    res.send('Cannot find any colors at this index: ' + index)
   }
-});
+})
 
 // Multiple parameters
-app.get("/question/:firstName/:lastName", (req, res) => {
-  console.log(req.params);
-  const { firstName, lastName } = req.params;
-  res.send(`${firstName} ${lastName} asks if there is life on Mars?`);
-});
+app.get('/question/:firstName/:lastName', (req, res) => {
+  console.log(req.params)
+  const { firstName, lastName } = req.params
+  res.send(`${firstName} ${lastName} asks if there is life on Mars?`)
+})
 
 // Parameters and query strings
-app.get("/calculator/:operator", (req, res) => {
-  const { num1, num2 } = req.query;
-  let sum = 0;
-  if (req.params.operator === "add") {
-    sum = Number(num1) + Number(num2);
+app.get('/calculator/:operator', (req, res) => {
+  const { num1, num2 } = req.query
+  let sum = 0
+  if (req.params.operator === 'add') {
+    sum = Number(num1) + Number(num2)
   }
-  res.send("sum is " + sum);
-});
+  res.send('sum is ' + sum)
+})
 
 // EXPORT
-module.exports = app;
+module.exports = app
 ```
