@@ -323,15 +323,15 @@ URL params (e.g., `:foo`, `:example`, `like `) can be anything, a number or a st
 
 Therefore, if you have these routes in this order in your `server.js`:
 
-- `/:prices`
-- `/colors`
+- `/colors/:id`
+- `/colors/cool`
 
-If you want to get to `/colors` - you'll always hit the `/:prices` route because the URL parameter will accept _any_ string. It doesn't know that `colors` is something specific to look for.
+If you want to get to `/colors/cool` - you'll always hit the `/colors/:id` route because the URL parameter will accept _any_ string. It doesn't know that `colors` is something specific to look for.
 
 - To fix this, put the more specific routes first
-- `/colors`
-- `/:prices`
-  Now, from top to bottom, the more specific route `/colors` will be triggered when the URL has `/colors`; if it doesn't match `/colors`, it will go to the following route.
+- `/colors/cool`
+- `/colors/:id`
+  Now, from top to bottom, the more specific route `/colors/cool` will be triggered when the URL has `/colors`; if it doesn't match `/colors/:id`, it will go to the following route.
 
 Here is a code example, building on the app you have so far:
 
@@ -340,47 +340,21 @@ Here is a code example, building on the app you have so far:
 app.get('/colors/:index', (req, res) => {
   const { index } = req.params
   if (colors[index]) {
-    res.send(colors[index])
+    res.json({ color: colors[index] })
   } else {
-    res.send('Cannot find any colors at this index: ' + index)
+    res.json({ message: `Cannot find any colors at this index: ${index}` })
   }
 })
 
 // This will never be reached
 app.get('/colors/cool', (req, res) => {
-  res.send(`
- <body
- style="background: linear-gradient(to bottom, ${colors[0]} 16%, ${colors[1]} 32%, ${colors[2]} 48%, ${colors[3]} 64%, ${colors[4]} 80%, ${colors[5]} 100%)"
- >
- <h1>Colors are cool!</h1>
- </body>
- `)
+  const coolColors = [colors[0], colors[1], colors[2]]
+
+  res.json({ colors: coolColors })
 })
 ```
 
 When you have this situation, reorder the routes so that the more specific routes come before less particular routes (those with params in them).
-
-```javascript
-app.get('/colors/cool', (req, res) => {
-  res.send(`
- <body
- style="background: linear-gradient(to bottom, ${colors[0]} 16%, ${colors[1]} 32%, ${colors[2]} 48%, ${colors[3]} 64%, ${colors[4]} 80%, ${colors[5]} 100%)"
- >
- <h1>Colors are cool!</h1>
- </body>
- `)
-})
-
-// Show one color
-app.get('/colors/:index', (req, res) => {
-  const { index } = req.params
-  if (colors[index]) {
-    res.send(colors[index])
-  } else {
-    res.send('cannot find anything at this index: ' + index)
-  }
-})
-```
 
 ## Multiple Parameters
 
