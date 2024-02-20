@@ -53,8 +53,8 @@ Start by requiring Express. You can console log it as proof that we've pulled in
 
 ```js
 // app.js
-const express = require("express");
-console.log(express);
+const express = require('express')
+console.log(express)
 ```
 
 Run this file by typing `node app.js`.
@@ -70,25 +70,25 @@ Even though the documentation uses the `function` keyword, you can write this ca
 This example will also write out `response` and `request` as parameters in our callback to help provide clarity in this first lesson. Later, you'll write your own code, and you can shorten the variables `response` to `res` and `request` to `req`.
 
 ```js
-const express = require("express");
-const app = express();
+const express = require('express')
+const app = express()
 
-app.get("/", (request, response) => {
-  response.send("Hello World");
-});
+app.get('/', (request, response) => {
+  response.send('Hello World')
+})
 ```
 
 Finally, turn on our app to always listen to requests. This example will use port 3003. You can typically use any port between 3000 and 9999 as long as other apps are not using them on your computer. When you put your app online, this port will be automatically configured for you, so you don't have to type it in the browser's URL when you visit your usual websites.
 
 ```js
-const express = require("express");
-const app = express();
+const express = require('express')
+const app = express()
 
-app.get("/", (request, response) => {
-  response.send("Hello World");
-});
+app.get('/', (request, response) => {
+  response.send('Hello World')
+})
 
-app.listen(3003);
+app.listen(3003)
 ```
 
 Start this app in the terminal:
@@ -109,17 +109,19 @@ To cancel it, you have to press <kbd>control</kbd> <kbd>c</kbd>
 It would be nice to have a status that this app is running. Add a `console.log` inside a callback that will be the second argument of the function `app.listen`.
 
 ```js
-const express = require("express");
-const app = express();
+const express = require('express')
+const app = express()
 
-app.get("/", (request, response) => {
-  response.send("Hello World");
-});
+app.get('/', (request, response) => {
+  response.send('Hello World')
+})
 
 app.listen(3003, () => {
-  console.log("Listening for requests on port 3003");
-});
+  console.log('Listening for requests on port 3003')
+})
 ```
+
+**\*\* NOTE:** While you are currently using `response.send` for your responses to return a string, think about your fetch calls in your previous applications. What type of data did you receive? An object. When building actualy applications, you will use `response.json` or more specifically `res.json` to return data to your front end. So do not become accustomed to the `response.send` construct. It is only used for teaching purposes.
 
 Neato! But how do you make a request?
 
@@ -160,9 +162,9 @@ This little app is doing a LOT!
 Update the route to say `Hello, world!!!!!!!!`
 
 ```js
-app.get("/", (request, response) => {
-  response.send("Hello, world!!!!!!!!");
-});
+app.get('/', (request, response) => {
+  response.send('Hello, world!!!!!!!!')
+})
 ```
 
 When you refresh the browser, nothing changes.
@@ -228,20 +230,20 @@ Then, to run your app, type:
 Let's add another route.
 
 ```js
-const express = require("express");
-const app = express();
+const express = require('express')
+const app = express()
 
-app.get("/", (request, response) => {
-  response.send("I love Express!");
-});
+app.get('/', (request, response) => {
+  response.send('I love Express!')
+})
 
-app.get("/universe", (request, response) => {
-  response.send("Hello Universe!");
-});
+app.get('/universe', (request, response) => {
+  response.send('Hello Universe!')
+})
 
 app.listen(3003, () => {
-  console.log("I am listening for requests on port 3003!");
-});
+  console.log('I am listening for requests on port 3003!')
+})
 ```
 
 To access this next route, you will go to http://localhost:3003/universe
