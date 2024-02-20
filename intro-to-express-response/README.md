@@ -121,7 +121,7 @@ app.listen(3003, () => {
 })
 ```
 
-\*\*\*\* NOTE: While you are currently using `response.send` for your responses to return a string, think about your fetch calls in your previous applications. What type of data did you receive? An object. When building actualy applications, you will use `response.json` or more specifically `res.json` to return an object to your front end. e.g
+**\*\* NOTE: While you are currently using `response.send` for your responses to return a string, think about your fetch calls in your previous applications. What type of data did you receive? An object. When building actualy applications, you will use `response.json` or more specifically `res.json` to return an object to your front end.** e.g
 
 ```js
 app.get('/', (request, response) => {
@@ -137,7 +137,7 @@ fetch('/')
   .then((data) => setMessage(data.message))
 ```
 
-So do not become accustomed to the `response.send` construct. It is only used for teaching purposes.\*\*
+So do not become accustomed to the `response.send` construct. It is only used for teaching purposes.
 
 Neato! But how do you make a request?
 
