@@ -119,7 +119,7 @@ You make read or code along. To code along, you can get started with the steps b
 - `npm init -y`
 - `npm i express`
 - `touch .env` (make sure you are on the same level as `package.json`)
-- `npm i dotenv@16`
+- `npm i dotenv`
 
 ### Set Up app.js
 
