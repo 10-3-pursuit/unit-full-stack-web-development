@@ -114,7 +114,7 @@ To begin separating concerns you will set up the server in one file and the rout
 
 You make read or code along. To code along, you can get started with the steps below.
 
-- make a new project folder and `cd` into it
+- make a new directory called `colors-backend` and `cd` into it
 - `touch .gitignore` (and set it up)
 - `npm init -y`
 - `npm i express`
