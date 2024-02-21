@@ -15,15 +15,12 @@ We are going to be building this app over several sessions, so let's make sure w
 
 - Navigate to your Desktop or other convenient folder
 - `git status` to make sure you are not already in a `git` repository
-- `mkdir bookmarks`
-- `cd bookmarks`
-- `touch server.js`
-- `npm init -y` (this will automatically say yes to all the npm default settings - this is fine for tutorials, small test builds, etc.)
-- `touch .gitignore` (tell git which files to ignore)
-- `touch app.js`
-- `touch .env`
-- `npm install express@4 dotenv@16`
-- go into `package.json` and change the start script to say `"start": "nodemon server.js"` if you are installing nodemon locally.
+- `mkdir bookmarks && cd $_`
+- `touch server.js app.js`
+- `touch .env .gitignore`
+- `npm init -y`
+- `npm install express dotenv`
+- go into `package.json` and change the start script to say `"dev": "nodemon server.js"`
 
 **.gitignore**
 
@@ -43,34 +40,34 @@ PORT=3003
 
 ```js
 // DEPENDENCIES
-const express = require("express");
+const express = require('express')
 
 // CONFIGURATION
-const app = express();
+const app = express()
 
 // ROUTES
-app.get("/", (req, res) => {
-  res.send("Welcome to Bookmarks App");
-});
+app.get('/', (req, res) => {
+  res.send('Welcome to Bookmarks App')
+})
 
 // EXPORT
-module.exports = app;
+module.exports = app
 ```
 
 **server.js**
 
 ```js
 // DEPENDENCIES
-const app = require("./app.js");
+const app = require('./app.js')
 
 // CONFIGURATION
-require("dotenv").config();
-const PORT = process.env.PORT;
+require('dotenv').config()
+const PORT = process.env.PORT
 
 // LISTEN
 app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
-});
+  console.log(`Listening on port ${PORT}`)
+})
 ```
 
 Test that your app works: http://localhost:3003
@@ -107,24 +104,36 @@ and then copy paste this into:
 ```js
 module.exports = [
   {
-    name: "MDN",
-    url: "https://developer.mozilla.org/en-US/",
+    name: 'MDN',
+    url: 'https://developer.mozilla.org/en-US/',
     isFavorite: true,
-    category: "educational",
+    category: 'educational',
   },
   {
-    name: "Apartment Therapy",
-    url: "https://www.apartmenttherapy.com",
+    name: 'Apartment Therapy',
+    url: 'https://www.apartmenttherapy.com',
     isFavorite: true,
-    category: "inspirational",
+    category: 'inspirational',
   },
   {
-    name: "DMV",
-    url: "https://dmv.ny.gov",
+    name: 'DMV',
+    url: 'https://dmv.ny.gov',
     isFavorite: false,
-    category: "adulting",
+    category: 'adulting',
   },
-];
+  {
+    name: 'W3Schools',
+    url: 'https://www.w3schools.com',
+    isFavorite: true,
+    category: 'educational',
+  },
+  {
+    name: 'Youtube',
+    url: 'https://www.youtube.com',
+    isFavorite: false,
+    category: 'reacreational',
+  },
+]
 ```
 
 **Thought question:** What does `module.exports` do? What happens if we forget to add it? What kind of error will we get?
@@ -146,15 +155,15 @@ All of our routes related to our bookmarks are going to be starting with `/bookm
 **controllers/bookmarksController.js**
 
 ```js
-const express = require("express");
-const bookmarks = express.Router();
-const bookmarksArray = require("../models/bookmark.js");
+const express = require('express')
+const bookmarks = express.Router()
+const bookmarksArray = require('../models/bookmark.js')
 
-bookmarks.get("/", (req, res) => {
-  res.json(bookmarksArray);
-});
+bookmarks.get('/', (req, res) => {
+  res.json(bookmarksArray)
+})
 
-module.exports = bookmarks;
+module.exports = bookmarks
 ```
 
 We are using `res.json()` instead of `res.send()`, since we are sending JSON instead of a simple string.
@@ -168,11 +177,11 @@ Then we'll use `/bookmarks` as the base of the routes, like so:
 **app.js**
 
 ```js
-const bookmarksController = require("./controllers/bookmarksController.js");
-app.use("/bookmarks", bookmarksController);
+const bookmarksController = require('./controllers/bookmarksController.js')
+app.use('/api/bookmarks', bookmarksController)
 ```
 
-Now, we should be able to go to http://localhost:3003/bookmarks and see our JSON
+Now, we should be able to go to http://localhost:3003/api/bookmarks and see our JSON
 
 ## Adding custom status codes
 
@@ -184,9 +193,9 @@ Let's add a 404 route. It should be below all the other routes.
 
 ```js
 // 404 PAGE
-app.get("*", (req, res) => {
-  res.json({ error: "Page not found" });
-});
+app.get('*', (req, res) => {
+  res.json({ error: 'Page not found' })
+})
 ```
 
 Test it http://localhost:3003/nothing_here
@@ -197,15 +206,11 @@ Add the code to create the correct status code for this route:
 
 ```js
 // 404 PAGE
-app.get("*", (req, res) => {
-  res.status(404).json({ error: "Page not found" });
-});
+app.get('*', (req, res) => {
+  res.status(404).json({ error: 'Page not found' })
+})
 ```
 
 - Why is it important to set the correct status code?
 - What datatype is the status code?
 - What is the default status code of your responses when you don't add a status code?
-
-## Resource
-
-[Completed Build](https://github.com/pursuit-curriculum-resources/bookmarks-express-demo)
