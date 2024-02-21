@@ -115,15 +115,12 @@ To begin separating concerns you will set up the server in one file and the rout
 You make read or code along. To code along, you can get started with the steps below.
 
 - make a new directory called `colors-backend` and `cd` into it
-- `touch .gitignore` (and set it up)
+- `touch .gitignore .env`
 - `npm init -y`
-- `npm i express`
-- `touch .env` (make sure you are on the same level as `package.json`)
-- `npm i dotenv`
+- `npm i express dotenv`
+- `touch app.js server.js`
 
 ### Set Up app.js
-
-- `touch app.js`
 
 ```js
 // DEPENDENCIES
@@ -142,8 +139,6 @@ module.exports = app
 ```
 
 ### Set up the server
-
-- `touch server.js`
 
 ```js
 // DEPENDENCIES
