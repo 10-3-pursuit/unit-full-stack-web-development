@@ -106,7 +106,9 @@ console.log(process.env.PORT)
 
 ## Separating concerns
 
-For subsequent assignments, you will add unit testing with Jest (or a similar testing suite). To set it up correctly, you must set up the server in one file and the routes and other logic in other files. The following code examples will demonstrate how to do this.
+Separating concerns through moving functionality to certain files and folders in your server is common and best practice. Remember how you used `helper.js` to abstract helper functions. Then imported them into the files where they would be invoked?
+
+To begin separating concerns you will set up the server in one file and the routes and other logic in other files. The following code examples will begin to demonstrate how to do this.
 
 ## Getting started
 
