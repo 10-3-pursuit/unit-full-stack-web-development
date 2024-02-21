@@ -138,7 +138,7 @@ app.get('/', (req, res) => {
 module.exports = app
 ```
 
-### Set up the server
+### Set up the server.js
 
 ```js
 // DEPENDENCIES

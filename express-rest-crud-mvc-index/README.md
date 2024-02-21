@@ -131,15 +131,15 @@ Then the `router` must be configured. The router is what will allow you to creat
 You can name the variable for `express.Router()` `router`, or you can use the name of the resource. Using the resource name can be helpful in reading and understanding the code.
 
 ```js
-const express = require("express");
-const colors = express.Router();
-const colorsArray = require("../models/color.js");
+const express = require('express')
+const colors = express.Router()
+const colorsArray = require('../models/color.js')
 
-colors.get("/", (req, res) => {
-  res.json(colorsArray);
-});
+colors.get('/', (req, res) => {
+  res.json(colorsArray)
+})
 
-module.exports = colors;
+module.exports = colors
 ```
 
 Notice that the relative path is `/`. Because this is in a controller, you'll take steps to access this route not at the base route of `http://localhost:3000` (typically the landing or home page goes there) but rather at `http://localhost:/3000/colors`. To set this up, follow the steps below.
@@ -149,13 +149,13 @@ Next, the colors resource code would be imported into the main file `app.js`.
 ```js
 // app.js
 // ROUTES
-const colorsController = require("./controllers/colorsController.js");
+const colorsController = require('./controllers/colorsController.js')
 ```
 
 And then configured. This `app.use()` function takes in a string which will be the URL path for the resource, and then the routes are the second argument.
 
 ```js
-app.use("/colors", colorsController);
+app.use('/colors', colorsController)
 ```
 
 You can now remove the routes in `app.js` that use `/colors` as you're rebuilding them in the `colorsController.js` file.
@@ -174,9 +174,9 @@ Like dynamic routes, it is important that this route goes below the other routes
 
 ```js
 // 404 Page not found
-app.get("*", (req, res) => {
-  res.json({ error: "Page not found" });
-});
+app.get('*', (req, res) => {
+  res.json({ error: 'Page not found' })
+})
 ```
 
 When you open up Chrome Dev Tools and go to the `Network` tab, you can see that this file loads with an http status of [304](https://http.cat/304) or [200](https://http.cat/200)
@@ -185,41 +185,7 @@ But because this is a 404 [page not found](https://http.cat/404), you should mak
 
 ```js
 // 404 Page not found
-app.get("*", (req, res) => {
-  res.status(404).json({ error: "Page not found" });
-});
+app.get('*', (req, res) => {
+  res.status(404).json({ error: 'Page not found' })
+})
 ```
-
-## Completed build
-
-[Colors DEMO MVC](https://github.com/pursuit-curriculum-resources/pre-reading-express-demo/tree/mvc)
-
-Notice, this code is on a different branch than `main`.
-
-To download and use this demo:
-
-### Option 1: just clone
-
-- Clone the repo to your machine
-- `cd pre-reading-express-demo`
-- `npm install` (install dependencies)
-- `git checkout -b mvc` (create a new branch and switch to it)
-- `git pull origin mvc` (bring in the code on the `mvc` branch)
-
-> **Pros**: Fast, easy, familiar
-
-> **Cons**: You won't be able to make changes and push them to GitHub
-
-### Option 2: fork and clone
-
-- Fork the repository
-- Clone your fork to your machine
-- `cd pre-reading-express-demo`
-- `npm install` (install dependencies)
-- `git checkout -b mvc` (create a new branch and switch to it)
-- `git remote add upstream https://github.com/pursuit-curriculum-resources/pre-reading-express-demo/tree/main` (create a new reference to GitHub called `upstream` and set it to the original repository)
-- `git pull upstream mvc` (bring in the code from the original repository on the `mvc` branch)
-
-> **Pros**: You can modify your version and push it to GitHub, you will practice using git and GitHub in a new way.
-
-> **Cons**: Extra steps, requires learning Git and GitHub in a new way.
