@@ -90,24 +90,24 @@ In this example, the show route uses the index position of the array. When you c
 
 ```js
 // SHOW
-colors.get("/:arrayIndex", (req, res) => {
-  const { arrayIndex } = req.params;
-  res.json(colorsArray[arrayIndex]);
-});
+colors.get('/:arrayIndex', (req, res) => {
+  const { arrayIndex } = req.params
+  res.json(colorsArray[arrayIndex])
+})
 ```
 
 You can improve the user experience by adding some error handling.
 
 ```js
 // SHOW
-colors.get("/:arrayIndex", (req, res) => {
-  const { arrayIndex } = req.params;
+colors.get('/:arrayIndex', (req, res) => {
+  const { arrayIndex } = req.params
   if (colorsArray[arrayIndex]) {
-    res.json(colorsArray[arrayIndex]);
+    res.json(colorsArray[arrayIndex])
   } else {
-    res.status(404).json({ error: "Not Found" });
+    res.status(404).json({ error: 'Not Found' })
   }
-});
+})
 ```
 
 What is the URL to access this route?
@@ -132,10 +132,10 @@ You can choose to either show the entire updated array or show only the new item
 
 ```js
 // CREATE
-colors.post("/", (req, res) => {
-  colorsArray.push(req.body);
-  res.json(colorsArray[colorsArray.length - 1]);
-});
+colors.post('/', (req, res) => {
+  colorsArray.push(req.body)
+  res.json(colorsArray[colorsArray.length - 1])
+})
 ```
 
 [You can read more about the application method POST in the documentation](https://expressjs.com/en/4x/api.html#app.post.method).
@@ -189,12 +189,12 @@ To test this, use the up arrow, and rerun the cURL command to POST.
 
 ```js
 // CREATE
-colors.post("/", (req, res) => {
+colors.post('/', (req, res) => {
   // What's the value of req.body?
-  console.log("This is req.body", req.body);
-  colorsArray.push(req.body);
-  res.json(colorsArray[colorsArray.length - 1]);
-});
+  console.log('This is req.body', req.body)
+  colorsArray.push(req.body)
+  res.json(colorsArray[colorsArray.length - 1])
+})
 ```
 
 ![req.body is undefined](./assets/req.body-is-undefined.png)
@@ -235,16 +235,16 @@ Since you always want to parse any incoming JSON data, you should put this funct
 ```js
 //app.js
 // CONFIGURATION
-const app = express();
+const app = express()
 
 // MIDDLEWARE
-app.use(express.json()); // parse incoming middleware
+app.use(express.json()) // parse incoming middleware
 
 // ROUTES
 // Home Page
-app.get("/", (req, res) => {
-  res.send("Welcome to Colors App");
-});
+app.get('/', (req, res) => {
+  res.send('Welcome to Colors App')
+})
 ```
 
 You should now be able to add a new color object using the following cURL command successfully.
@@ -256,13 +256,13 @@ You now have a new small issue: this new data not a simple string, unlike your m
 ```js
 // /models/color.js
 module.exports = [
-  { name: "MistyRose" },
-  { name: "Coral" },
-  { name: "Goldenrod" },
-  { name: "MediumAquamarine" },
-  { name: "DeepSkyBlue" },
-  { name: "Violet" },
-];
+  { name: 'MistyRose' },
+  { name: 'Coral' },
+  { name: 'Goldenrod' },
+  { name: 'MediumAquamarine' },
+  { name: 'DeepSkyBlue' },
+  { name: 'Violet' },
+]
 ```
 
 Now your old and new data will all be in the same format.
@@ -272,154 +272,15 @@ Now your old and new data will all be in the same format.
 ```js
 //app.js
 // CONFIGURATION
-const app = express();
+const app = express()
 
 // ROUTES
 // Home Page
-app.get("/", (req, res) => {
-  res.send("Welcome to Colors App");
-});
+app.get('/', (req, res) => {
+  res.send('Welcome to Colors App')
+})
 
 // body-parsing functionality is below the routes in this example
 // MIDDLEWARE
-app.use(express.json()); // parse incoming middleware
+app.use(express.json()) // parse incoming middleware
 ```
-
-## Custom Middleware
-
-For every request, there is a response. Once the response happens, the cycle is complete. However, there is a lot of functionality that is often needed to occur before the cycle is complete.
-
-You just built an example that handles incoming data from requests and parses it into JSON. It was passed in through `app.use()` above all the routes - which means it will be used with all paths. You also saw an example where you can limit where this additional functionality happens by simply placing the middleware below the routes.
-
-### Building your own middleware for multiple routes
-
-Another example for middleware is that you might want to check that the request is coming from a user that is logged in. The app will allow the request to flow to the correct route if the user is logged in. But if the user is not logged in, the app could redirect the request to respond with a login page instead.
-
-Because middleware can change the flow of the request-response cycle, it can be set up slightly differently than a route by including a third callback function called `next()`.
-
-Look at this application-level middleware [from the documentation](https://expressjs.com/en/guide/using-middleware.html). You can use this example to create your middleware.
-
-Middleware has three callbacks, `req()`, `res()` and `next()`. You're already familiar with `req()` and `res()`. `next()` is a function that allows the request to move to the next middleware or to a final route. Therefore, when your code is finished in middleware, you should not use a `return` statement. You should send a response or the function `next()`.
-
-The following middleware example will show every request's method, host, and path.
-
-Notice in this simple example, where once the function is complete, it uses the `next()` function to move to the next middleware or route:
-
-Here is the shell:
-
-```js
-app.use((req, res, next) => {});
-```
-
-Here is the functionality:
-
-```js
-app.use((req, res, next) => {
-  console.log(req.method, req.headers.host, req.path);
-  return next();
-});
-```
-
-Notice, it uses a return statement. While the return statement is not necessary, return statements are like an express ticket out of a function and thus ensure the current function is complete before moving on to the next one. [Stack overflow example](https://stackoverflow.com/questions/16810449/when-to-use-next-and-return-next-in-node-js)
-
-Here is another example. This one can change the flow of the response:
-
-```js
-app.use((req, res, next) => {
-  if (req.query.apikey) {
-    // Go to the next matching route
-    return next();
-  } else {
-    // Complete the request-response cycle
-    res.send("You must supply an API key");
-  }
-});
-```
-
-If you add this middleware to your application in `app.js` above all the routes, all requests must now include query parameters with `apikey` to see any views.
-
-http://localhost:3333/colors?apikey=1234
-
-### Limiting routes
-
-Adding API key authentication globally completely limits access to your entire app to anyone who does not have an API key. This is not a good user experience. Have you ever tried to go to a website but can't see any pages unless you create an account and log in? How does it feel to find a website like that? A better experience is to allow visitors to see some of the website, but limit what they can do until they create an account.
-
-You can limit requiring the key to the POST route in two ways.
-
-First, move the middleware into the `colorsController` right above the `POST` route (make sure POST route is the final route).
-
-```js
-// Other routes should be above this code
-
-colors.use((req, res, next) => {
-  if (req.query.apikey) {
-    return next();
-  } else {
-    res.send("You must supply an API key");
-  }
-});
-
-// This should be the last route in the file
-// CREATE
-colors.post("/", (req, res) => {
-  colorsArray.push(req.body);
-  res.json(colorsArray[colorsArray.length - 1]);
-});
-```
-
-Now you should be able to access the rest of the routes. But users without an API key should be unable to create new colors.
-
-Error:
-
-- `curl -H "Content-Type: application/json" -X POST -d '{"name":"blanchedalmond"}' http://localhost:3333/colors`
-
-Allows adding new color:
-
-- `curl -H "Content-Type: application/json" -X POST -d '{"name":"papayawhip"}' http://localhost:3333/colors\?apikey\=4321`
-
-> **Note**: The backslash (`\`) is needed in several places to `escape` the character. Some characters have special functionality on the command line. Putting certain characters after the backslash allows them to be recognized as regular characters rather than triggering their special functionality.
-
-### Middleware for specific routes
-
-You can also write a named callback function instead of an anonymous callback.
-
-```js
-function checkForColorKey = (req, res, next) => {
-  if (req.body.hasOwnProperty("name")) {
-   return next();
-  } else {
-    res.send("You must supply an object with a key of `name`");
-  }
-};
-```
-
-And include it in the POST route:
-
-```js
-// CREATE
-colors.post("/", checkForColorKey, (req, res) => {
-  colorsArray.push(req.body);
-  res.json(colorsArray[colorsArray.length - 1]);
-});
-```
-
-Error:
-
-- `curl -H "Content-Type: application/json" -X POST -d '{"html_color_name": "papayawhip"}' http://localhost:3333/colors/\?apikey\=4321`
-
-Success:
-
-- `curl -H "Content-Type: application/json" -X POST -d '{"name":"lemonchiffon"}' http://localhost:3333/colors\?apikey\=4321`
-
-## Reference app
-
-See the full build on GitHub [Pre-reading-express-demo branch: middleware](https://github.com/pursuit-curriculum-resources/pre-reading-express-demo/tree/middleware)
-
-<details><summary>Mini-Bonus: More modern cURL command for sending a JSON post request:</summary>
-
-Please note, you must have at least cURL version 7 to be able to run this command. ( use `curl --version` to check you're machine's version).
-
-- `curl --json '{"name":"fuchsia"}' -X POST http://localhost:3003/colorss`
-
-- What is the same with this command? What is different?
-  For more info on the [--json flag](https://daniel.haxx.se/blog/2022/02/02/curl-dash-dash-json/)
