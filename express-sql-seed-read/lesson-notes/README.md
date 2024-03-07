@@ -6,11 +6,11 @@ All the code blocks are here to help guide you and help you if you get stuck. Ho
 
 ## Getting Started
 
-- Navigate to your Desktop or another convenient folder
-- `git status` to make sure you are not already in a `git` repository
-- `mkdir pg-bookmarks-api`
-- `cd pg-bookmarks-api`
-- `touch .gitignore`
+- create a new folder called `fullstack-bookmarks`.
+- cd into the folder
+- `clone` OR `fork` and `clone the [backend repo](https://github.com/10-3-pursuit/class-db-bookmarks-backend) inside the parent folder `fullstack-bookmarks`
+
+- Make sure your `.gitignore` has these files/folders included.
 
 ```
 # .gitignore
@@ -19,55 +19,15 @@ node_modules
 .DS_Store
 ```
 
-- `git init`
-- `git add -A`
-- `git commit -m 'first commit'`
-- `touch server.js`
-- `npm init -y`
-- `touch app.js .env`
-- `npm install express dotenv cors`
+- In your terminal, `npm install`
+
+Test that your app works: http://localhost:3003
 
 **Thought question** - Why is it essential to add and commit after setting up the .gitignore?
-
-**Follow-up question** - How would you fix adding and committing folders and files you did not mean to add?
-
-**Review Questions:**
-
-- What did the above steps do? Try to put it in your own words. It's essential to learn to talk about code.
-
-```
-# .env
-PORT=3003
-```
 
 **Review Questions:**
 
 - What does the `.env` file and setup do?
-
-```js
-// app.js
-// DEPENDENCIES
-const cors = require("cors");
-const express = require("express");
-
-// CONFIGURATION
-const app = express();
-
-// MIDDLEWARE
-app.use(cors());
-app.use(express.json());
-
-// ROUTES
-app.get("/", (req, res) => {
-  res.send("Welcome to Bookmarks App");
-});
-
-// EXPORT
-module.exports = app;
-```
-
-**Review Questions:**
-
 - What do the `app.js` file and setup do?
 - What is middleware?
 - What does `app.use(cors())` do?
@@ -76,26 +36,6 @@ module.exports = app;
 - What is `req` short for?
 - What is `res` short for?
 - What is `module.exports`? What does it do?
-
-```js
-// server.js
-// DEPENDENCIES
-const app = require("./app.js");
-
-// CONFIGURATION
-require("dotenv").config();
-const PORT = process.env.PORT;
-
-// LISTEN
-app.listen(PORT, () => {
-  console.log(`💻 Listening on port ${PORT} 🔖`);
-});
-```
-
-Test that your app works: http://localhost:3003
-
-**Review Questions:**
-
 - What do the `server` file and setup do?
 - What is `app`? What does it do in this file?
 
@@ -103,40 +43,19 @@ Test that your app works: http://localhost:3003
 
 Use <kbd>control</kbd> <kbd>shift</kbd> <kbd>t</kbd> to open a new terminal tab so you can continue your work without having to shut your server down (please note that changes to configuration files do require a hard reset of your server).
 
-**Terminal**
-
-- `mkdir controllers`
-- `touch controllers/bookmarksController.js`
-
-```js
-// controllers/bookmarksController.js
-const express = require("express");
-const bookmarks = express.Router();
-
-// INDEX
-bookmarks.get("/", (req, res) => {
-  res.json({ status: "ok" });
-});
-
-module.exports = bookmarks;
-```
-
 **Review Questions:**
 
-- What URL must one go to to see this message?
-- Why doesn't it work yet?
-- Why don't we see a 404 message, either?
+`Bookmarks Controller`
 
 ```js
-// app.js
-// Bookmarks ROUTES
-const bookmarksController = require("./controllers/bookmarksController.js");
-app.use("/bookmarks", bookmarksController);
+const bookmarksController = require('./controllers/bookmarksController.js')
+
+app.use('/bookmarks', bookmarksController)
 
 // 404 PAGE
-app.get("*", (req, res) => {
-  res.status(404).send("Page not found");
-});
+app.get('*', (req, res) => {
+  res.status(404).send('Page not found')
+})
 ```
 
 Now try: http://localhost:3003/bookmarks
@@ -198,8 +117,10 @@ This line of code says, run the app `psql`, use the `U`ser `postgres` and run th
 
 <hr />
 
+`-- db/seed.sql`
+
 ```SQL
--- db/seed.sql
+
 \c bookmarks_dev;
 
 INSERT INTO bookmarks (name, url, category, is_favorite) VALUES
@@ -261,9 +182,9 @@ Begin configuring pg-promise to make a connection within your Express server:
 
 ```js
 // db/dbConfig.js
-const pgp = require("pg-promise")();
+const pgp = require('pg-promise')()
 
-module.exports = db;
+module.exports = db
 ```
 
 We will pass an object with the necessary information to connect our server with our database. We'll bring in the variables from our `.env` file.
@@ -273,19 +194,19 @@ Finally, we must open the connection with `const db = pgp(cn);`
 - What is `cn` short for?
 
 ```js
-const pgp = require("pg-promise")();
-require("dotenv").config();
+const pgp = require('pg-promise')()
+require('dotenv').config()
 
 const cn = {
   host: process.env.PG_HOST,
   port: process.env.PG_PORT,
   database: process.env.PG_DATABASE,
   user: process.env.PG_USER,
-};
+}
 
-const db = pgp(cn);
+const db = pgp(cn)
 
-module.exports = db;
+module.exports = db
 ```
 
 To add additional db connection status info (the following code is not necessary to connect the db and run the app.) After a few more steps, you will not see this status message until you open a connection.
@@ -293,13 +214,13 @@ To add additional db connection status info (the following code is not necessary
 ```js
 db.connect()
   .then((cn) => {
-    const { user, host, port, database } = cn.client;
+    const { user, host, port, database } = cn.client
     console.log(
       `Postgres connection established with user:\x1b[33m${user}\x1b[0m, host:\x1b[33m${host}\x1b[0m, port:\x1b[33m${port}\x1b[0m, database:\x1b[33m${database}\x1b[0m`
-    );
-    cn.done();
+    )
+    cn.done()
   })
-  .catch((error) => console.log("database connection error", error));
+  .catch((error) => console.log('database connection error', error))
 ```
 
 ## Querying the Database
@@ -313,9 +234,9 @@ First, let's bring in our connection to the database and immediately export it (
 
 ```js
 // queries/bookmarks.js
-const db = require("../db/dbConfig.js");
+const db = require('../db/dbConfig.js')
 
-module.exports = {};
+module.exports = {}
 ```
 
 Next, let's write our first function, which will have a SQL query.
@@ -324,11 +245,11 @@ Next, let's write our first function, which will have a SQL query.
 
 ```js
 // queries/bookmarks.js
-const db = require("../db/dbConfig.js");
+const db = require('../db/dbConfig.js')
 
-const getAllBookmarks = async () => {};
+const getAllBookmarks = async () => {}
 
-module.exports = { getAllBookmarks };
+module.exports = { getAllBookmarks }
 ```
 
 > **Note**: We are returning an object with `module.exports` because we will be returning more than one function. Therefore, we will store it in an object.
@@ -339,9 +260,9 @@ Next, we want to set up a `try/catch` block so that if we have a problem, we can
 const getAllBookmarks = async () => {
   try {
   } catch (error) {
-    return error;
+    return error
   }
-};
+}
 ```
 
 Finally, let's add our query.
@@ -356,26 +277,26 @@ Be sure to export this function.
 // queries/bookmarks.js
 const getAllBookmarks = async () => {
   try {
-    const allBookmarks = await db.any("SELECT * FROM bookmarks");
-    return allBookmarks;
+    const allBookmarks = await db.any('SELECT * FROM bookmarks')
+    return allBookmarks
   } catch (error) {
-    return error;
+    return error
   }
-};
+}
 ```
 
 Require `getAllBookmarks` function and update `bookmarks.get()` index route to be `async`.
 
 ```js
 // controllers/bookmarksController.js
-const express = require("express");
-const bookmarks = express.Router();
-const { getAllBookmarks } = require("../queries/bookmarks");
+const express = require('express')
+const bookmarks = express.Router()
+const { getAllBookmarks } = require('../queries/bookmarks')
 
 // INDEX
-bookmarks.get("/", async (req, res) => {});
+bookmarks.get('/', async (req, res) => {})
 
-module.exports = bookmarks;
+module.exports = bookmarks
 ```
 
 Let's create a new variable, `allBookmarks`, an array of bookmark objects. Remember, we must `await` for the value to come back from the database.
@@ -384,10 +305,10 @@ Then, we'll send it as JSON to the browser.
 
 ```js
 // INDEX
-bookmarks.get("/", async (req, res) => {
-  const allBookmarks = await getAllBookmarks();
-  res.json(allBookmarks);
-});
+bookmarks.get('/', async (req, res) => {
+  const allBookmarks = await getAllBookmarks()
+  res.json(allBookmarks)
+})
 ```
 
 Let's do a little error handling.
@@ -396,14 +317,14 @@ Let's do a little error handling.
 
 ```js
 // INDEX
-bookmarks.get("/", async (req, res) => {
-  const allBookmarks = await getAllBookmarks();
+bookmarks.get('/', async (req, res) => {
+  const allBookmarks = await getAllBookmarks()
   if (allBookmarks[0]) {
-    res.status(200).json(allBookmarks);
+    res.status(200).json(allBookmarks)
   } else {
-    res.status(500).json({ error: "server error" });
+    res.status(500).json({ error: 'server error' })
   }
-});
+})
 ```
 
 ## Test it
