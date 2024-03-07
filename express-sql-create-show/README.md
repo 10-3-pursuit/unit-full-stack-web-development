@@ -34,12 +34,12 @@ To start working on the show route, open your `queries/colors.js` file, create a
 // queries/colors.js
 
 // ONE Color
-const getColor = async () => {};
+const getColor = async () => {}
 
 module.exports = {
   getAllColors,
   getColor,
-};
+}
 ```
 
 You will get the `id` from the `req.params` in the show route (in colorsController - see below).
@@ -51,19 +51,19 @@ You are passing two arguments to `db.one()`, one is the SQL query, and the secon
 It may be tempting to write the SQL query using a JavaScript template literal like this:
 
 ```javascript
-`SELECT * FROM colors WHERE id=${id};`;
+;`SELECT * FROM colors WHERE id=${id};`
 ```
 
 However, this is unsafe. Instead, the SQL string will use its own variables that start with a `$`.
 
 ```js
-"SELECT * FROM colors WHERE id=$1";
+'SELECT * FROM colors WHERE id=$1'
 ```
 
 And a second argument in the `db.one()` function will be used to pass in the actual data.
 
 ```js
-const oneColor = await db.one("SELECT * FROM colors WHERE id=$1", id);
+const oneColor = await db.one('SELECT * FROM colors WHERE id=$1', id)
 ```
 
 This extra step is to prevent SQL injection attacks by hackers. [Bonus Video on SQL Injection](https://www.youtube.com/watch?v=ciNHn38EyRc5).
@@ -77,20 +77,20 @@ The entire function will include error handling:
 ```js
 const getColor = async (id) => {
   try {
-    const oneColor = await db.one("SELECT * FROM colors WHERE id=$1", id);
-    return oneColor;
+    const oneColor = await db.one('SELECT * FROM colors WHERE id=$1', id)
+    return oneColor
   } catch (error) {
-    return error;
+    return error
   }
-};
+}
 ```
 
 > **Note**: You may also pass in arguments to your SQL query using an object with named keys like so:
 
 ```js
-await db.one("SELECT * FROM colors WHERE id=$[id]", {
+await db.one('SELECT * FROM colors WHERE id=$[id]', {
   id: id,
-});
+})
 ```
 
 Knowing this alternate syntax can be helpful as you look at other coding examples. When you work on a project, stick with one syntax type for readability and maintainability.
@@ -99,7 +99,7 @@ Import the function to your controller.
 
 ```js
 // controllers/colorsController.js
-const { getAllColors, getColor } = require("../queries/color");
+const { getAllColors, getColor } = require('../queries/color')
 ```
 
 Create the show route and test it in the browser/Postman.
@@ -107,10 +107,10 @@ Create the show route and test it in the browser/Postman.
 ```js
 // controllers/colorsController.js
 // SHOW
-colors.get("/:id", async (req, res) => {
-  const { id } = req.params;
-  res.json({ id });
-});
+colors.get('/:id', async (req, res) => {
+  const { id } = req.params
+  res.json({ id })
+})
 ```
 
 Add in the query and add some logic if the query returns no results.
@@ -118,15 +118,15 @@ Add in the query and add some logic if the query returns no results.
 ```js
 // controllers/colorsController.js
 // SHOW
-colors.get("/:id", async (req, res) => {
-  const { id } = req.params;
-  const color = await getColor(id);
+colors.get('/:id', async (req, res) => {
+  const { id } = req.params
+  const color = await getColor(id)
   if (color) {
-    res.json(color);
+    res.json(color)
   } else {
-    res.status(404).json({ error: "not found" });
+    res.status(404).json({ error: 'not found' })
   }
-});
+})
 ```
 
 ## Create
@@ -138,15 +138,15 @@ Start by creating the query. Create an async arrow function and be sure to inclu
 const createColor = async (color) => {
   try {
   } catch (error) {
-    throw error;
+    throw error
   }
-};
+}
 
 module.exports = {
   getAllColors,
   createColor,
   getColor,
-};
+}
 ```
 
 Inserting into the database requires two arguments.
@@ -168,31 +168,31 @@ Set up our basic statement:
 const createColor = async (color) => {
   try {
     const newColor = await db.one(
-      "INSERT INTO colors (name, is_favorite) VALUES($1, $2) RETURNING *",
+      'INSERT INTO colors (name, is_favorite) VALUES($1, $2) RETURNING *',
       [color.name, color.is_favorite]
-    );
-    return newColor;
+    )
+    return newColor
   } catch (error) {
-    return error;
+    return error
   }
-};
+}
 ```
 
 Import the function
 
 ```js
 // controllers/colorsController.js
-const { getAllColors, getColor, createColor } = require("../queries/color");
+const { getAllColors, getColor, createColor } = require('../queries/color')
 ```
 
 Create the show route and test it with Postman.
 
 ```js
 // CREATE
-colors.post("/", async (req, res) => {
-  const color = await createColor(req.body);
-  res.json(color);
-});
+colors.post('/', async (req, res) => {
+  const color = await createColor(req.body)
+  res.json(color)
+})
 ```
 
 Example Color:
@@ -236,15 +236,15 @@ You can add this logic to the route, but then our route starts to become a funct
 ```js
 // validations/checkColors.js
 const checkName = (req, res, next) => {
-  console.log("checking name...");
-};
+  console.log('checking name...')
+}
 
-module.exports = { checkName };
+module.exports = { checkName }
 ```
 
 ```js
 //controller/colorsController.js
-const { checkName } = require("../validations/checkColors.js");
+const { checkName } = require('../validations/checkColors.js')
 ```
 
 Add this function as middleware for the create route.
@@ -259,11 +259,11 @@ This request will hang because we are not sending a response.
 ```js
 const checkName = (req, res, next) => {
   if (req.body.name) {
-    console.log("name is ok");
+    console.log('name is ok')
   } else {
-    res.status(400).json({ error: "Name is required" });
+    res.status(400).json({ error: 'Name is required' })
   }
-};
+}
 ```
 
 Ok, you get the error message. But how do you return to the route if you enter a name now?
@@ -273,11 +273,11 @@ You use the `next()` function.
 ```js
 const checkName = (req, res, next) => {
   if (req.body.name) {
-    return next();
+    return next()
   } else {
-    res.status(400).json({ error: "Name is required" });
+    res.status(400).json({ error: 'Name is required' })
   }
-};
+}
 ```
 
 Let's try again.
@@ -306,13 +306,13 @@ PostgreSQL is strict. It will not accept `maybe`, it will reject the POST reques
 // validations/checkColors/js
 const checkBoolean = (req, res, next) => {
   if (req.body.is_favorite) {
-    next();
+    next()
   } else {
-    res.status(400).json({ error: "is_favorite must be a boolean value" });
+    res.status(400).json({ error: 'is_favorite must be a boolean value' })
   }
-};
+}
 
-module.exports = { checkBoolean, checkName };
+module.exports = { checkBoolean, checkName }
 ```
 
 Don't forget to add this to the `colorsController.js`.
@@ -333,21 +333,21 @@ If you don't know, go ahead and google it.
 
 ```js
 const checkBoolean = (req, res, next) => {
-  const { is_favorite } = req.body;
+  const { is_favorite } = req.body
   // account if string or undefined
   // the value false will evaluate to false
   // therefore check if typeof is boolean as well
   if (
-    is_favorite == "true" ||
-    is_favorite == "false" ||
+    is_favorite == 'true' ||
+    is_favorite == 'false' ||
     is_favorite == undefined ||
-    typeof is_favorite == "boolean"
+    typeof is_favorite == 'boolean'
   ) {
-    next();
+    next()
   } else {
-    res.status(400).json({ error: "is_favorite must be a boolean value" });
+    res.status(400).json({ error: 'is_favorite must be a boolean value' })
   }
-};
+}
 ```
 
 </details>
@@ -359,4 +359,4 @@ const checkBoolean = (req, res, next) => {
 
 ## Reference
 
-[See completed build](https://github.com/pursuit-curriculum-resources/pre-reading-express-sql-seed-read/tree/show-create)
+[See completed build](https://github.com/10-3-pursuit/class-db-bookmarks-backend)

@@ -64,23 +64,23 @@ PORT=3003
 ```js
 // app.js
 // DEPENDENCIES
-const cors = require("cors");
-const express = require("express");
+const cors = require('cors')
+const express = require('express')
 
 // CONFIGURATION
-const app = express();
+const app = express()
 
 // MIDDLEWARE
-app.use(cors());
-app.use(express.json());
+app.use(cors())
+app.use(express.json())
 
 // ROUTES
-app.get("/", (req, res) => {
-  res.send("Welcome to Colors App");
-});
+app.get('/', (req, res) => {
+  res.send('Welcome to Colors App')
+})
 
 // EXPORT
-module.exports = app;
+module.exports = app
 ```
 
 **Review Questions:**
@@ -90,16 +90,16 @@ module.exports = app;
 ```js
 // server.js
 // DEPENDENCIES
-const app = require("./app.js");
+const app = require('./app.js')
 
 // CONFIGURATION
-require("dotenv").config();
-const PORT = process.env.PORT;
+require('dotenv').config()
+const PORT = process.env.PORT
 
 // LISTEN
 app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
-});
+  console.log(`Listening on port ${PORT}`)
+})
 ```
 
 Test that your app works: http://localhost:3003
@@ -128,15 +128,15 @@ Use <kbd>control</kbd> <kbd>shift</kbd> <kbd>t</kbd> to open a new terminal tab 
 
 ```js
 // controllers/colorsController.js
-const express = require("express");
-const colors = express.Router();
+const express = require('express')
+const colors = express.Router()
 
 // INDEX
-colors.get("/", (req, res) => {
-  res.json({ status: "ok" });
-});
+colors.get('/', (req, res) => {
+  res.json({ status: 'ok' })
+})
 
-module.exports = colors;
+module.exports = colors
 ```
 
 **Review Questions:**
@@ -148,13 +148,13 @@ module.exports = colors;
 ```js
 // app.js
 // Colors ROUTES
-const colorsController = require("./controllers/colorsController.js");
-app.use("/colors", colorsController);
+const colorsController = require('./controllers/colorsController.js')
+app.use('/colors', colorsController)
 
 // 404 PAGE
-app.get("*", (req, res) => {
-  res.status(404).send("Page not found");
-});
+app.get('*', (req, res) => {
+  res.status(404).send('Page not found')
+})
 ```
 
 Now try: http://localhost:3003/colors
@@ -311,9 +311,9 @@ Remember, a database like Postgres is very similar to a server in that it takes 
 
 ```js
 // db/dbConfig.js
-const pgp = require("pg-promise")();
+const pgp = require('pg-promise')()
 
-module.exports = db;
+module.exports = db
 ```
 
 Now, you have to set up the connection. You will pass an object with the necessary information to connect your server with your database. You'll bring in the variables from your `.env` file.
@@ -333,35 +333,35 @@ protocol     user       host  port  sub-database
 - `cn` - is short for connection
 
 ```js
-const pgp = require("pg-promise")();
-require("dotenv").config();
+const pgp = require('pg-promise')()
+require('dotenv').config()
 
 const cn = {
   host: process.env.PG_HOST,
   port: process.env.PG_PORT,
   database: process.env.PG_DATABASE,
   user: process.env.PG_USER,
-};
+}
 
-module.exports = db;
+module.exports = db
 ```
 
 Finally, you must open the connection with `const db = pgp(cn);`
 
 ```js
-const pgp = require("pg-promise")();
-require("dotenv").config();
+const pgp = require('pg-promise')()
+require('dotenv').config()
 
 const cn = {
   host: process.env.PG_HOST,
   port: process.env.PG_PORT,
   database: process.env.PG_DATABASE,
   user: process.env.PG_USER,
-};
+}
 
-const db = pgp(cn);
+const db = pgp(cn)
 
-module.exports = db;
+module.exports = db
 ```
 
 If you want more information about the connection, add the following function. This is not required to create the connection, but like the console.log in the Express server `app.listen()` function, it gives you the connection status to Postgres.
@@ -369,15 +369,15 @@ If you want more information about the connection, add the following function. T
 ```js
 db.connect()
   .then((cn) => {
-    const { user, host, port, database } = cn.client;
+    const { user, host, port, database } = cn.client
     console.log(
-      "\x1b[90m" +
+      '\x1b[90m' +
         `Postgres connection established with user:${user}, host:${host}, port:${port}, database:${database}` +
-        "\x1b[0m"
-    );
-    cn.done();
+        '\x1b[0m'
+    )
+    cn.done()
   })
-  .catch((error) => console.log("database connection error", error));
+  .catch((error) => console.log('database connection error', error))
 ```
 
 > **Note**: You will not see this message until you make a request to the database. This request will not happen until you've taken a few more steps and called the query function in the controller. Follow the next steps to get there.
@@ -393,9 +393,9 @@ First, bring your connection to the database and immediately export it (so you d
 
 ```js
 // queries/color.js
-const db = require("../db/dbConfig.js");
+const db = require('../db/dbConfig.js')
 
-module.exports = {};
+module.exports = {}
 ```
 
 Next, write your first function, which will have a SQL query.
@@ -403,11 +403,11 @@ Next, write your first function, which will have a SQL query.
 **IMPORTANT** - this will be an async function. You need to wait for the database's response before returning a value.
 
 ```js
-const db = require("../db/dbConfig.js");
+const db = require('../db/dbConfig.js')
 
-const getAllColors = async () => {};
+const getAllColors = async () => {}
 
-module.exports = { getAllColors };
+module.exports = { getAllColors }
 ```
 
 > **Note**: with `module.exports`, you are returning an object because you will return more than one function. Therefore, you will store the various functions in an object.
@@ -418,9 +418,9 @@ Next, you want to set up a `try/catch` block so that if you have a problem, you 
 const getAllColors = async () => {
   try {
   } catch (error) {
-    return error;
+    return error
   }
-};
+}
 ```
 
 Finally, add your query.
@@ -432,26 +432,26 @@ Be sure to export this function.
 ```js
 const getAllColors = async () => {
   try {
-    const allColors = await db.any("SELECT * FROM colors");
-    return allColors;
+    const allColors = await db.any('SELECT * FROM colors')
+    return allColors
   } catch (error) {
-    return error;
+    return error
   }
-};
+}
 ```
 
 Require `getAllColors()` function and update `colors.get()` index route to be `async`.
 
 ```js
 // controllers/colorController.js
-const express = require("express");
-const colors = express.Router();
-const { getAllColors } = require("../queries/color");
+const express = require('express')
+const colors = express.Router()
+const { getAllColors } = require('../queries/color')
 
 // INDEX
-colors.get("/", async (req, res) => {});
+colors.get('/', async (req, res) => {})
 
-module.exports = colors;
+module.exports = colors
 ```
 
 Create a new variable, `allColors`, an array of color objects. Remember, you must `await` for the value to come back from the database.
@@ -460,23 +460,23 @@ Then, we'll send it as JSON to the browser.
 
 ```js
 // INDEX
-colors.get("/", async (req, res) => {
-  const allColors = await getAllColors();
-  res.json(allColors);
-});
+colors.get('/', async (req, res) => {
+  const allColors = await getAllColors()
+  res.json(allColors)
+})
 ```
 
 Let's do a little error handling.
 
 ```js
-colors.get("/", async (req, res) => {
-  const allColors = await getAllColors();
+colors.get('/', async (req, res) => {
+  const allColors = await getAllColors()
   if (allColors[0]) {
-    res.status(200).json(allColors);
+    res.status(200).json(allColors)
   } else {
-    res.status(500).json({ error: "server error" });
+    res.status(500).json({ error: 'server error' })
   }
-});
+})
 ```
 
 ## Test it
@@ -492,4 +492,4 @@ Go to http://localhost:3003/colors
 
 ## Reference build
 
-[pre-reading-express-sql-seed-read](https://github.com/pursuit-curriculum-resources/pre-reading-express-sql-seed-read)
+[pre-reading-express-sql-seed-read](https://github.com/10-3-pursuit/class-db-bookmarks-backend)

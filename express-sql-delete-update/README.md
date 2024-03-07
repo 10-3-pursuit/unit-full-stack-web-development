@@ -17,30 +17,30 @@ Create an async arrow function and be sure to include it in `module.exports`
 const deleteColor = async (id) => {
   try {
   } catch (error) {
-    return error;
+    return error
   }
-};
+}
 
 module.exports = {
   getAllColors,
   getColor,
   createColor,
   deleteColor,
-};
+}
 ```
 
 ```js
 const deleteColor = async (id) => {
   try {
     const deletedColor = await db.one(
-      "DELETE FROM colors WHERE id = $1 RETURNING *",
+      'DELETE FROM colors WHERE id = $1 RETURNING *',
       id
-    );
-    return deletedColor;
+    )
+    return deletedColor
   } catch (error) {
-    return error;
+    return error
   }
-};
+}
 ```
 
 Import the function:
@@ -52,7 +52,7 @@ const {
   getColor,
   createColor,
   deleteColor,
-} = require("../queries/color");
+} = require('../queries/color')
 ```
 
 Create the delete route and test it with Postman. Remember to have selected:
@@ -64,35 +64,35 @@ Test that the route works:
 ```js
 // controllers/colorController.js
 // DELETE
-colors.delete("/:id", async (req, res) => {
-  const { id } = req.params;
-  res.status(200).json({ id });
-});
+colors.delete('/:id', async (req, res) => {
+  const { id } = req.params
+  res.status(200).json({ id })
+})
 ```
 
 Now add the database call:
 
 ```js
 // DELETE
-colors.delete("/:id", async (req, res) => {
-  const { id } = req.params;
-  const deletedColor = await deleteColor(id);
-  res.status(200).json(deletedColor);
-});
+colors.delete('/:id', async (req, res) => {
+  const { id } = req.params
+  const deletedColor = await deleteColor(id)
+  res.status(200).json(deletedColor)
+})
 ```
 
 Add some error handling.
 
 ```js
-colors.delete("/:id", async (req, res) => {
-  const { id } = req.params;
-  const deletedColor = await deleteColor(id);
+colors.delete('/:id', async (req, res) => {
+  const { id } = req.params
+  const deletedColor = await deleteColor(id)
   if (deletedColor.id) {
-    res.status(200).json(deletedColor);
+    res.status(200).json(deletedColor)
   } else {
-    res.status(404).json("Color not found");
+    res.status(404).json('Color not found')
   }
-});
+})
 ```
 
 Test it with Postman again.
@@ -110,9 +110,9 @@ Create an async arrow function and be sure to include it in `module.exports`
 const updateColor = async (id, color) => {
   try {
   } catch (error) {
-    return error;
+    return error
   }
-};
+}
 
 module.exports = {
   getAllColors,
@@ -120,7 +120,7 @@ module.exports = {
   createColor,
   deleteColor,
   updateColor,
-};
+}
 ```
 
 Add the query:
@@ -129,14 +129,14 @@ Add the query:
 const updateColor = async (id, color) => {
   try {
     const updatedColor = await db.one(
-      "UPDATE colors SET name=$1, is_favorite=$2 where id=$3 RETURNING *",
+      'UPDATE colors SET name=$1, is_favorite=$2 where id=$3 RETURNING *',
       [color.name, color.is_favorite, id]
-    );
-    return updatedColor;
+    )
+    return updatedColor
   } catch (error) {
-    return error;
+    return error
   }
-};
+}
 ```
 
 Import the function
@@ -149,28 +149,28 @@ const {
   createColor,
   deleteColor,
   updateColor,
-} = require("../queries/color");
+} = require('../queries/color')
 ```
 
 First confirm the route is reachable.
 
 ```js
 // UPDATE
-colors.put("/:id", async (req, res) => {
-  const { id } = req.params;
-  res.status(200).json({ id });
-});
+colors.put('/:id', async (req, res) => {
+  const { id } = req.params
+  res.status(200).json({ id })
+})
 ```
 
 Now add the database call.
 
 ```js
 // UPDATE
-colors.put("/:id", async (req, res) => {
-  const { id } = req.params;
-  const updatedColor = await updateColor(id, req.body);
-  res.status(200).json(updatedColor);
-});
+colors.put('/:id', async (req, res) => {
+  const { id } = req.params
+  const updatedColor = await updateColor(id, req.body)
+  res.status(200).json(updatedColor)
+})
 ```
 
 Test it and remember to have the following:
@@ -201,4 +201,4 @@ colors.put("/:id", checkName, checkBoolean, async (req, res) => {
 
 ## Reference
 
-[Here is the reference build](https://github.com/pursuit-curriculum-resources/pre-reading-express-sql-seed-read/tree/update-delete)
+[Here is the reference build](https://github.com/10-3-pursuit/class-db-bookmarks-backend)
