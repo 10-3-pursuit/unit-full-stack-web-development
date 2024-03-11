@@ -8,7 +8,7 @@ All the code blocks are here to help guide you and help you if you get stuck. Ho
 
 - create a new folder called `fullstack-bookmarks`.
 - cd into the folder
-- `clone` OR `fork` and `clone the [backend repo](https://github.com/10-3-pursuit/class-db-bookmarks-backend) inside the parent folder `fullstack-bookmarks`
+- `clone` OR `fork` and `clone` the [backend repo](https://github.com/10-3-pursuit/class-db-bookmarks-backend) inside the parent folder `fullstack-bookmarks`
 
 - Make sure your `.gitignore` has these files/folders included.
 
