@@ -41,7 +41,7 @@ Test that your app works: http://localhost:3003
 
 ## Bookmarks Controller
 
-Use <kbd>control</kbd> <kbd>shift</kbd> <kbd>t</kbd> to open a new terminal tab so you can continue your work without having to shut your server down (please note that changes to configuration files do require a hard reset of your server).
+Open a new terminal tab so you can continue your work without having to shut your server down **(please note that changes to configuration files do require a hard reset of your server)**.
 
 **Review Questions:**
 
