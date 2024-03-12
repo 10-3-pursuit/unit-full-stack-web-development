@@ -15,12 +15,12 @@ Start by creating the query. Create an async arrow function and be sure to inclu
 ```js
 // queries/bookmarks.js
 // ONE Bookmark
-const getBookmark = async () => {};
+const getBookmark = async () => {}
 
 module.exports = {
   getAllBookmarks,
   getBookmark,
-};
+}
 ```
 
 - Where will we will get the value of the `id` from?
@@ -34,44 +34,44 @@ module.exports = {
 ```js
 const getBookmark = async (id) => {
   try {
-    const oneBookmark = await db.one("SELECT * FROM bookmarks WHERE id=$1", id);
-    return oneBookmark;
+    const oneBookmark = await db.one('SELECT * FROM bookmarks WHERE id=$1', id)
+    return oneBookmark
   } catch (error) {
-    return error;
+    return error
   }
-};
+}
 ```
 
 Import the function to your controller:
 
 ```js
 // controllers/bookmarkController.js
-const { getAllBookmarks, getBookmark } = require("../queries/bookmarks");
+const { getAllBookmarks, getBookmark } = require('../queries/bookmarks')
 ```
 
 Create the show route and test it in the browser/Postman.
 
 ```js
 // SHOW
-bookmarks.get("/:id", async (req, res) => {
-  const { id } = req.params;
-  res.json({ id });
-});
+bookmarks.get('/:id', async (req, res) => {
+  const { id } = req.params
+  res.json({ id })
+})
 ```
 
 Add in the query and add some error handling:
 
 ```js
 // SHOW
-bookmarks.get("/:id", async (req, res) => {
-  const { id } = req.params;
-  const bookmark = await getBookmark(id);
+bookmarks.get('/:id', async (req, res) => {
+  const { id } = req.params
+  const bookmark = await getBookmark(id)
   if (bookmark) {
-    res.json(bookmark);
+    res.json(bookmark)
   } else {
-    res.status(404).json({ error: "not found" });
+    res.status(404).json({ error: 'not found' })
   }
-});
+})
 ```
 
 ## Create
@@ -83,15 +83,15 @@ Create an async arrow function and be sure to include it in `module.exports`.
 const createBookmark = async (bookmark) => {
   try {
   } catch (error) {
-    throw error;
+    throw error
   }
-};
+}
 
 module.exports = {
   getAllBookmarks,
   createBookmark,
   getBookmark,
-};
+}
 ```
 
 Inserting into the database requires two arguments.
@@ -108,14 +108,14 @@ Set up our basic statement:
 const createBookmark = async (bookmark) => {
   try {
     const newBookmark = await db.one(
-      "INSERT INTO bookmarks (name, url, category, is_favorite) VALUES($1, $2, $3, $4) RETURNING *",
+      'INSERT INTO bookmarks (name, url, category, is_favorite) VALUES($1, $2, $3, $4) RETURNING *',
       [bookmark.name, bookmark.url, bookmark.category, bookmark.is_favorite]
-    );
-    return newBookmark;
+    )
+    return newBookmark
   } catch (error) {
-    return error;
+    return error
   }
-};
+}
 ```
 
 - What is the purpose of including `RETURNING *`?
@@ -128,21 +128,21 @@ const {
   getAllBookmarks,
   getBookmark,
   createBookmark,
-} = require("../queries/bookmarks");
+} = require('../queries/bookmarks')
 ```
 
 Create the show route and test it with Postman.
 
 ```js
 // CREATE
-bookmarks.post("/", async (req, res) => {
+bookmarks.post('/', async (req, res) => {
   try {
-    const bookmark = await createBookmark(req.body);
-    res.json(bookmark);
+    const bookmark = await createBookmark(req.body)
+    res.json(bookmark)
   } catch (error) {
-    res.status(400).json({ error: error });
+    res.status(400).json({ error: error })
   }
-});
+})
 ```
 
 Example Bookmark:
@@ -183,17 +183,17 @@ Set up a separate folder and file for validations:
 ```js
 // validations/checkBookmarks.js
 const checkName = (req, res, next) => {
-  console.log("checking name...");
-};
+  console.log('checking name...')
+}
 
-module.exports = { checkName };
+module.exports = { checkName }
 ```
 
 Import the function to the controller:
 
 ```js
 // controller/bookmarksController.js
-const { checkName } = require("../validations/checkBookmarks.js");
+const { checkName } = require('../validations/checkBookmarks.js')
 ```
 
 Add this function as middleware for the create route.
@@ -208,11 +208,11 @@ Write some logic to check the name:
 ```js
 const checkName = (req, res, next) => {
   if (req.body.name) {
-    console.log("name is ok");
+    console.log('name is ok')
   } else {
-    res.status(400).json({ error: "Name is required" });
+    res.status(400).json({ error: 'Name is required' })
   }
-};
+}
 ```
 
 - Why are you not getting a response if the name is truthy?
@@ -221,12 +221,12 @@ const checkName = (req, res, next) => {
 ```js
 const checkName = (req, res, next) => {
   if (req.body.name) {
-    console.log("name is ok");
-    return next();
+    console.log('name is ok')
+    return next()
   } else {
-    res.status(400).json({ error: "Name is required" });
+    res.status(400).json({ error: 'Name is required' })
   }
-};
+}
 ```
 
 Try again with Postman:
@@ -270,13 +270,13 @@ Create a validation to be sure the value is a boolean.
 // validations/checkBookmarks/js
 const checkBoolean = (req, res, next) => {
   if (req.body.is_favorite) {
-    next();
+    next()
   } else {
-    res.status(400).json({ error: "is_favorite must be a boolean value" });
+    res.status(400).json({ error: 'is_favorite must be a boolean value' })
   }
-};
+}
 
-module.exports = { checkBoolean, checkName };
+module.exports = { checkBoolean, checkName }
 ```
 
 Don't forget to add this to the `bookmarkController.js`.
@@ -306,4 +306,4 @@ How can we check if the `req.body.is_favorite` value is a valid value?
 
 ## Reference
 
-[See the build here](https://github.com/pursuit-curriculum-resources/express-sql-seed-read-demo/tree/show-create)
+[See the build here](https://github.com/10-3-pursuit/class-db-bookmarks-backend)
