@@ -4,14 +4,19 @@
 
 Make sure all your routes work as expected. It does not matter how amazing your front-end code is; it cannot repair a broken back-end.
 
-> **Note**: If needed, you can also clone down the completed back-end [here](https://github.com/pursuit-curriculum-resources/express-sql-seed-read-demo), use branch `one-to-many`.
+> **Note**: If needed, you can also clone down the completed back-end [here](https://github.com/10-3-pursuit/class-db-bookmarks-backend).
 
 ## Getting Started
 
-- `git clone https://github.com/pursuit-curriculum-resources/starter-pern-crud`
-- `cd starter-pern-crud`
-- Checkout a new branch: `git checkout -b one-to-many`
-- Pull in the `one-to-many` branch - `git pull origin starter-one-to-many`
+### Option 1
+
+Use the `class-db-bookmarks-frontend` repo you have already been working in.
+
+### Option 2
+
+- `git fork` the [class-db-bookmarks-frontend](https://github.com/10-3-pursuit/class-db-bookmarks-frontend) repo.
+- `clone the repo into the parent folder that also contains `class-db-bookmarks-backend` repo.
+- `cd` into the frontend repo.
 - `npm install`
 - `touch .env`
 - Add `.env` variables (base URL for the back-end see `.env.template`)
@@ -31,33 +36,33 @@ Create an index view of all reviews belonging to one bookmark.
 
 ```js
 // src/Reviews.jsx
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import Review from "./Review";
+import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import Review from './Review'
 
-const API = import.meta.env.VITE_BASE_URL;
+const API = import.meta.env.VITE_BASE_URL
 
 function Reviews() {
-  const [reviews, setReviews] = useState([]);
-  let { id } = useParams();
+  const [reviews, setReviews] = useState([])
+  let { id } = useParams()
 
   useEffect(() => {
     fetch(`${API}/bookmarks/${id}/reviews`)
       .then((response) => response.json())
       .then((response) => {
-        setReviews(response.reviews);
-      });
-  }, [id, API]);
+        setReviews(response.reviews)
+      })
+  }, [id, API])
   return (
     <section className="Reviews">
       {reviews.map((review) => (
         <Review key={review.id} review={review} />
       ))}
     </section>
-  );
+  )
 }
 
-export default Reviews;
+export default Reviews
 ```
 
 Create a review component:
@@ -73,17 +78,17 @@ function Review({ review }) {
       <h5>{review.reviewer}</h5>
       <p>{review.content}</p>
     </div>
-  );
+  )
 }
 
-export default Review;
+export default Review
 ```
 
 Import `Reviews` into BookmarkDetails.
 
 ```js
 // src/BookmarkDetails.jsx
-import Reviews from "./Reviews";
+import Reviews from './Reviews'
 ```
 
 After the buttons and closing `div`s (right above the closing `article` tag):
@@ -119,25 +124,25 @@ Here are the new pieces of code. Place them in their appropriate locations(along
 ```js
 // Top of file
 // src/Reviews.jsx
-import ReviewForm from "./ReviewForm";
+import ReviewForm from './ReviewForm'
 ```
 
 ```js
 // add this inside the Reviews() function
 const handleAdd = (newReview) => {
   fetch(`${API}/bookmarks/${id}/reviews`, {
-    method: "POST",
+    method: 'POST',
     body: JSON.stringify(newReview),
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   })
     .then((response) => response.json())
     .then((responseJSON) => {
-      setReviews([responseJSON, ...reviews]);
+      setReviews([responseJSON, ...reviews])
     })
-    .catch((error) => console.error("catch", error));
-};
+    .catch((error) => console.error('catch', error))
+}
 ```
 
 ```js
@@ -152,7 +157,7 @@ return (
       <Review key={review.id} review={review} />
     ))}
   </section>
-);
+)
 ```
 
 ## Add Delete Functionality
@@ -161,21 +166,21 @@ return (
 // src/Reviews.jsx
 const handleDelete = (id) => {
   fetch(`${API}/bookmarks/${id}/reviews/${id}`, {
-    method: "DELETE",
+    method: 'DELETE',
   })
     .then(
       (response) => {
-        const copyReviewArray = [...reviews];
+        const copyReviewArray = [...reviews]
         const indexDeletedReview = copyReviewArray.findIndex((review) => {
-          return review.id === id;
-        });
-        copyReviewArray.splice(indexDeletedReview, 1);
-        setReviews(copyReviewArray);
+          return review.id === id
+        })
+        copyReviewArray.splice(indexDeletedReview, 1)
+        setReviews(copyReviewArray)
       },
       (error) => console.error(error)
     )
-    .catch((error) => console.warn("catch", error));
-};
+    .catch((error) => console.warn('catch', error))
+}
 ```
 
 Add the delete method to the Review component.
@@ -198,7 +203,7 @@ function Review({ review, handleDelete }) {
       <p>{review.content}</p>
       <button onClick={() => handleDelete(review.id)}>delete</button>
     </div>
-  );
+  )
 }
 ```
 
@@ -210,23 +215,23 @@ Add the API call to Reviews.jsx
 // src/Reviews.jsx
 const handleEdit = (updatedReview) => {
   fetch(`${API}/bookmarks/${id}/reviews/${updatedReview.id}`, {
-    method: "PUT",
+    method: 'PUT',
     body: JSON.stringify(updatedReview),
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   })
     .then((response) => response.json())
     .then((responseJSON) => {
-      const copyReviewArray = [...reviews];
+      const copyReviewArray = [...reviews]
       const indexUpdatedReview = copyReviewArray.findIndex((review) => {
-        return review.id === updatedReview.id;
-      });
-      copyReviewArray[indexUpdatedReview] = responseJSON;
-      setReviews(copyReviewArray);
+        return review.id === updatedReview.id
+      })
+      copyReviewArray[indexUpdatedReview] = responseJSON
+      setReviews(copyReviewArray)
     })
-    .catch((error) => console.error(error));
-};
+    .catch((error) => console.error(error))
+}
 ```
 
 Pass it to the `Review` component
@@ -245,7 +250,7 @@ The way we will approach this is to add a button to edit. This will toggle the v
 ```js
 // DEMO DO NOT CODE
 {
-  viewEditForm ? <ShowIfValueIsTrue /> : <ShowIfValueIsFalse />;
+  viewEditForm ? <ShowIfValueIsTrue /> : <ShowIfValueIsFalse />
 }
 ```
 
@@ -253,13 +258,13 @@ The way we will approach this is to add a button to edit. This will toggle the v
 
 ```js
 // Components/Review.jsx
-import { useState } from "react";
-import ReviewForm from "./ReviewForm";
+import { useState } from 'react'
+import ReviewForm from './ReviewForm'
 function Review({ review, handleDelete, handleSubmit }) {
-  const [viewEditForm, setEditForm] = useState(false);
+  const [viewEditForm, setEditForm] = useState(false)
   const toggleView = () => {
-    setEditForm(!viewEditForm);
-  };
+    setEditForm(!viewEditForm)
+  }
   return (
     <div className="Review">
       {viewEditForm ? (
@@ -279,15 +284,15 @@ function Review({ review, handleDelete, handleSubmit }) {
       )}
       <div className="review-actions">
         <button onClick={toggleView}>
-          {viewEditForm ? "Cancel" : "Edit this review"}
+          {viewEditForm ? 'Cancel' : 'Edit this review'}
         </button>
         <button onClick={() => handleDelete(review.id)}>delete</button>
       </div>
     </div>
-  );
+  )
 }
 
-export default Review;
+export default Review
 ```
 
 Now you should be able to click the `edit this review` button and toggle between the two components.
