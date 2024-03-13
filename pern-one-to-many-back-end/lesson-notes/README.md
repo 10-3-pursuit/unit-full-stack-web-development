@@ -16,16 +16,14 @@ We added foreign keys (the primary key `id` of the `one` to the `many`).
 
 #### Option 1: Continue with your previous build
 
-- `cd` into your bookmarks app that you've been building
+- Open your `class-db-bookmarks-backend` directory and make sure it workd
 
 #### Option 2: Clone down some starter code
 
-- `git clone https://github.com/pursuit-curriculum-resources/express-sql-seed-read-demo.git`
-- `cd express-sql-seed-read-demo`
-- `git checkout -b one-to-many`
-- `git pull origin starter-one-to-many`
+- `fork` [class-db-bookmarks-backend
+  ](https://github.com/10-3-pursuit/class-db-bookmarks-backend)
 - `npm install`
-- Update the `.env` to work on your machine
+- Update the `.env` to work on your machine based on the .env.example file
 
 ### Continue
 
@@ -120,8 +118,8 @@ Don't forget to add this to your `app.js`.
 ```js
 // app.js
 // Reviews ROUTES
-const reviewsController = require("./controllers/reviewsController.js");
-app.use("/reviews", reviewsController);
+const reviewsController = require('./controllers/reviewsController.js')
+app.use('/reviews', reviewsController)
 ```
 
 ### Test All Your routes
@@ -161,13 +159,13 @@ We need to do two things to use `/bookmarks/:id/reviews` as a base route.
 
 ```js
 // controllers/reviewController.js
-const reviews = express.Router({ mergeParams: true });
+const reviews = express.Router({ mergeParams: true })
 ```
 
 ```js
 // controllers/bookmarkController.js
-const reviewsController = require("./reviewsController.js");
-bookmarks.use("/:bookmark_id/reviews", reviewsController);
+const reviewsController = require('./reviewsController.js')
+bookmarks.use('/:bookmark_id/reviews', reviewsController)
 ```
 
 Now we can go to http://localhost:3003/bookmarks/1/reviews
@@ -179,15 +177,15 @@ Update the code by passing the parameter to the query and then updating the quer
 ```js
 // controllers/reviewsController.js
 // INDEX
-reviews.get("/", async (req, res) => {
-  const { bookmark_id } = req.params;
+reviews.get('/', async (req, res) => {
+  const { bookmark_id } = req.params
   try {
-    const allReviews = await getAllReviews(bookmark_id);
-    res.json(allReviews);
+    const allReviews = await getAllReviews(bookmark_id)
+    res.json(allReviews)
   } catch (err) {
-    res.json(err);
+    res.json(err)
   }
-});
+})
 ```
 
 ```js
@@ -195,14 +193,14 @@ reviews.get("/", async (req, res) => {
 const getAllReviews = async (bookmark_id) => {
   try {
     const allReviews = await db.any(
-      "SELECT * FROM reviews WHERE bookmark_id=$1",
+      'SELECT * FROM reviews WHERE bookmark_id=$1',
       bookmark_id
-    );
-    return allReviews;
+    )
+    return allReviews
   } catch (err) {
-    return err;
+    return err
   }
-};
+}
 ```
 
 It would be useful to see the bookmark with the review.
@@ -210,7 +208,7 @@ It would be useful to see the bookmark with the review.
 Import the query `getBookmark` to the reviews controller.
 
 ```js
-const { getBookmark } = require("../queries/bookmarks.js");
+const { getBookmark } = require('../queries/bookmarks.js')
 ```
 
 Call it and make a new nested object to send back.
@@ -218,16 +216,16 @@ Call it and make a new nested object to send back.
 ```js
 // controllers/reviewsController.js
 // INDEX
-reviews.get("/", async (req, res) => {
-  const { bookmark_id } = req.params;
-  const reviews = await getAllReviews(bookmark_id);
-  const bookmark = await getBookmark(bookmark_id);
+reviews.get('/', async (req, res) => {
+  const { bookmark_id } = req.params
+  const reviews = await getAllReviews(bookmark_id)
+  const bookmark = await getBookmark(bookmark_id)
   if (bookmark.id) {
-    res.status(200).json({ ...bookmark, reviews });
+    res.status(200).json({ ...bookmark, reviews })
   } else {
-    res.status(500).json({ error: "Bookmark not found or server error" });
+    res.status(500).json({ error: 'Bookmark not found or server error' })
   }
-});
+})
 ```
 
 ## Cleaning up the Code
@@ -237,8 +235,8 @@ In this app, there is no need ever to see reviews without the bookmark. So you c
 ```js
 // app.js
 // REMOVE THIS CODE
-const reviewsController = require("./controllers/reviewsController.js");
-app.use("/reviews", reviewsController);
+const reviewsController = require('./controllers/reviewsController.js')
+app.use('/reviews', reviewsController)
 ```
 
 ## Test the nested routes
@@ -254,16 +252,16 @@ Use the `getBookmark()` function and create a new object with both the bookmark 
 ```js
 // controllers/reviewsController.js
 // SHOW
-reviews.get("/:id", async (req, res) => {
-  const { bookmark_id, id } = req.params;
-  const review = await getReview(id);
-  const bookmark = await getBookmark(bookmark_id);
+reviews.get('/:id', async (req, res) => {
+  const { bookmark_id, id } = req.params
+  const review = await getReview(id)
+  const bookmark = await getBookmark(bookmark_id)
   if (review) {
-    res.json({ ...bookmark, review });
+    res.json({ ...bookmark, review })
   } else {
-    res.status(404).json({ error: "not found" });
+    res.status(404).json({ error: 'not found' })
   }
-});
+})
 ```
 
 - Could you write this code as one database call?
@@ -286,11 +284,11 @@ The `bookmark_id` is null. Update the `/reviews` POST route:
 
 ```js
 // controllers/reviewsController.js
-reviews.post("/", async (req, res) => {
-  const { bookmark_id } = req.params;
-  const review = await newReview({ bookmark_id, ...req.body });
-  res.status(200).json(review);
-});
+reviews.post('/', async (req, res) => {
+  const { bookmark_id } = req.params
+  const review = await newReview({ bookmark_id, ...req.body })
+  res.status(200).json(review)
+})
 ```
 
 Update the new bookmark (include a review's id in the URL and a bookmark_id). It should be something like `/bookmarks/1/reviews/11`. Below is a sample object to test:
@@ -311,16 +309,16 @@ Make the updates to accept the correct arguments so that the ids come from the U
 ```js
 // controllers/reviewsController.js
 // UPDATE
-reviews.put("/:id", async (req, res) => {
-  const { id, bookmark_id } = req.params;
-  console.log(id, req.params.bookmark_id);
-  const updatedReview = await updateReview({ bookmark_id, id, ...req.body });
+reviews.put('/:id', async (req, res) => {
+  const { id, bookmark_id } = req.params
+  console.log(id, req.params.bookmark_id)
+  const updatedReview = await updateReview({ bookmark_id, id, ...req.body })
   if (updatedReview.id) {
-    res.status(200).json(updatedReview);
+    res.status(200).json(updatedReview)
   } else {
-    res.status(404).json("Review not found");
+    res.status(404).json('Review not found')
   }
-});
+})
 ```
 
 Update the query to take one argument
@@ -329,7 +327,7 @@ Update the query to take one argument
 const updateReview = async (review) => {
   try {
     const updatedReview = await db.one(
-      "UPDATE reviews SET reviewer=$1, title=$2, content=$3, rating=$4, bookmark_id=$5 where id=$6 RETURNING *",
+      'UPDATE reviews SET reviewer=$1, title=$2, content=$3, rating=$4, bookmark_id=$5 where id=$6 RETURNING *',
       [
         review.reviewer,
         review.title,
@@ -338,12 +336,12 @@ const updateReview = async (review) => {
         review.bookmark_id,
         review.id,
       ]
-    );
-    return updatedReview;
+    )
+    return updatedReview
   } catch (error) {
-    return error;
+    return error
   }
-};
+}
 ```
 
 ### Delete
