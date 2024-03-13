@@ -13,7 +13,7 @@ The new and edit views are already set up for you.
 - Go to your bookmarks backend app and get it started. If you do not have a working copy you can `fork` and `clone` this one: [class-db-bookmarks-backend](https://github.com/10-3-pursuit/class-db-bookmarks-backend)
 - Open a new tab in the terminal, do not shut down your bookmarks backend app.
 - Navigate into your parent directory for the bookmarks app. Confirm you are not already inside a git repository.
-- Fork the [class-db-bookmarks-frontend](https://github.com/10-3-pursuit/class-db-bookmarks-frontend) in your class GitHub Organization.
+- Fork the [class-db-bookmarks-frontend](https://github.com/10-3-pursuit/class-db-bookmarks-frontend).
 - `git clone` the forked repository inside your parent folder.
 - `npm install` to install dependencies already included in the `package.json`.
 - `touch .env`
