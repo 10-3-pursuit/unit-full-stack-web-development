@@ -16,7 +16,8 @@ We added foreign keys (the primary key `id` of the `one` to the `many`).
 
 #### Option 1: Continue with your previous build
 
-- Open your `class-db-bookmarks-backend` directory and make sure it workd
+- Open your `class-db-bookmarks-backend` directory and make sure it is working.
+- Maybe test routes in Postman to be sure.
 
 #### Option 2: Clone down some starter code
 
@@ -24,6 +25,9 @@ We added foreign keys (the primary key `id` of the `one` to the `many`).
   ](https://github.com/10-3-pursuit/class-db-bookmarks-backend)
 - `npm install`
 - Update the `.env` to work on your machine based on the .env.example file
+- `npm run db:init`
+- `npm run db:seed`
+- `npm run dev`
 
 ### Continue
 
