@@ -10,11 +10,11 @@ This build will review how to make:
 
 The new and edit views are already set up for you.
 
-- Go to your bookmarks back-end app and get it started.
-- Open a new tab in the terminal, do not shut down your bookmarks back-end app.
+- Go to your bookmarks backend app and get it started. (If you do not have a working copy you can `fork` and `clone` this one: [class-db-bookmarks-backend](https://github.com/10-3-pursuit/class-db-bookmarks-backend))
+- Open a new tab in the terminal, do not shut down your bookmarks backend app.
 - Navigate up and out of the bookmarks app. Confirm you are not already inside a git repository.
-- Fork the [starter-pern-crud](https://github.com/pursuit-curriculum-resources/starter-pern-crud) in your class GitHub Organization.
-- `git clone` the forked repository.
+- Fork the [class-db-bookmarks-frontend](https://github.com/10-3-pursuit/class-db-bookmarks-frontend) in your class GitHub Organization.
+- `git clone` the forked repository inside your parent folder.
 - `npm install` to install dependencies already included in the `package.json`.
 - `touch .env`
 
@@ -44,7 +44,7 @@ Let's click on `Bookmarks` in the navigation to go to `/bookmarks`.
 
 </details>
 
-We can see that we have a view for our index page. But we need to connect this app to our back-end. We can do so using the fetch API much like we did using third-party APIs.
+We can see that we have a view for our index page. But we need to connect this app to our backend. We can do so using the fetch API much like we did using third-party APIs.
 
 ## Setting Up the App to Make Requests
 
@@ -62,8 +62,8 @@ Can you spot the differences? Can you talk about why you think the changes have 
 // src/Components/Bookmarks.js
 
 useEffect(() => {
-  fetch(`${API}/bookmarks`);
-}, []);
+  fetch(`${API}/bookmarks`)
+}, [])
 ```
 
 - Now we can make our API call, but `then`, what should happen?
@@ -75,8 +75,8 @@ useEffect(() => {
   fetch(`${API}/bookmarks/${id}`)
     .then(() => {})
     .then(() => {})
-    .catch(() => {});
-}, []);
+    .catch(() => {})
+}, [])
 ```
 
 - What does the first function do?
@@ -91,13 +91,13 @@ Add the functionality in the right places:
 useEffect(() => {
   fetch(`${API}/bookmarks`)
     .then((response) => {
-      return response.json();
+      return response.json()
     })
     .then((responseJSON) => {
-      setBookmarks(responseJSON);
+      setBookmarks(responseJSON)
     })
-    .catch((error) => console.error(error));
-}, []);
+    .catch((error) => console.error(error))
+}, [])
 ```
 
 ## Show
@@ -112,15 +112,15 @@ We will hard-code values to see our components and make sure things are set up a
 
 ```js
 // src/Components/BookmarkDetails.js
-import { useState } from "react";
+import { useState } from 'react'
 
 function BookmarkDetails() {
-  const [bookmark, setBookmark] = useState([]);
+  const [bookmark, setBookmark] = useState([])
   return (
     <article>
       <h3>{true ? <span>⭐️</span> : null} bookmark.name</h3>
     </article>
-  );
+  )
 }
 ```
 
@@ -128,7 +128,7 @@ Let's add the link for the actual bookmark page.
 
 ```js
 function BookmarkDetails() {
-  const [bookmark, setBookmark] = useState([]);
+  const [bookmark, setBookmark] = useState([])
   return (
     <article>
       <h3>{true ? <span>⭐️</span> : null} bookmark.name</h3>
@@ -141,7 +141,7 @@ function BookmarkDetails() {
       <h6>bookmark.category</h6>
       <p>bookmark.description</p>
     </article>
-  );
+  )
 }
 ```
 
@@ -150,7 +150,7 @@ function BookmarkDetails() {
 Let's add the buttons for edit, delete, and back.
 
 ```js
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom'
 
 // Further down inside the component
 
@@ -181,7 +181,7 @@ return (
       </div>
     </div>
   </article>
-);
+)
 ```
 
 ## Adding Functionality
@@ -235,7 +235,7 @@ return (
     <h5>
       <span>
         <a href={bookmark.url}>{bookmark.name}</a>
-      </span>{" "}
+      </span>{' '}
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       {bookmark.url}
     </h5>
@@ -243,7 +243,7 @@ return (
     <p>{bookmark.description}</p>
     <div className="showNavigation">
       <div>
-        {" "}
+        {' '}
         <Link to={`/bookmarks`}>
           <button>Back</button>
         </Link>
@@ -258,7 +258,7 @@ return (
       </div>
     </div>
   </article>
-);
+)
 ```
 
 ## Delete Functionality
@@ -271,8 +271,8 @@ From this view, we want to be able to delete a bookmark. It's common to name a f
 ```js
 // src/boookmarkDetails.jsx
 const handleDelete = () => {
-  console.log("button clicked");
-};
+  console.log('button clicked')
+}
 ```
 
 Let's add a click event.
@@ -287,32 +287,32 @@ Click the button to check that your click handler works as expected.
 
 We will use another fetch call to request the database to delete the bookmark.
 
-When the deletion is completed on the back-end, we can think about the user experience. A reasonable way to handle it is to take the user back to the Index page, so they can see that their bookmark has been successfully deleted.
+When the deletion is completed on the backend, we can think about the user experience. A reasonable way to handle it is to take the user back to the Index page, so they can see that their bookmark has been successfully deleted.
 
 We can do this by using `useNavigate` from React Router.
 
 ```js
 // Top of file
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate } from 'react-router-dom'
 
-let navigate = useNavigate();
+let navigate = useNavigate()
 
 // Inside BookmarkDetails function
 const deleteBookmark = () => {
   fetch(`${API}/bookmarks/${id}`, {
-    method: "DELETE",
+    method: 'DELETE',
   })
     .then(() => navigate(`/bookmarks`))
-    .catch((error) => console.error(error));
-};
+    .catch((error) => console.error(error))
+}
 ```
 
 Finally, let's call this function:
 
 ```js
 const handleDelete = () => {
-  deleteBookmark();
-};
+  deleteBookmark()
+}
 ```
 
 ## Reference Build
