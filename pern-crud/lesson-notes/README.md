@@ -1,5 +1,21 @@
 # PERN Stack: CRUD
 
+There will only be minor changes to the frontend to get it to work with your new backend. Therefore this lesson will be review.
+
+## Intro
+
+You now have a nicely working backend with full CRUD using Express. Unfortunately, it isn't the best user experience for non-developers. You need to build a frontend.
+
+When you stack **P**ostgres, **E**press, **R**eact, and **N**ode, it is often called the `PERN` Stack.
+
+There are many different technology stacks. You may see some when you start looking for jobs, like Ruby on Rails, LAMP, MEAN, Django, and Laravel - generally, these stacks refer to a backend language/framework, a database, and some way of rendering views. As you encounter these stacks, google them as needed. It will be improbable that you will have worked with every technology listed in a stack. In tech, it's more important to have strong fundamentals so that you will be ready to learn what you need as you build.
+
+## REVIEW: The Seven RESTful Routes
+
+The seven RESTful routes are often the classic example of a RESTful pattern. Despite the different tech stacks listed above, many will still follow this pattern, usually some version of MVC.
+
+While this pattern is classic, and we will follow it exactly for learning fundamentals, you will see many variations in the wild. These variations are to meet specific functionality needs or improve user experience. Patterns are recommendations, not rules.
+
 We have built the first five routes in Express:
 
 |  #  | Action  |      URL       | HTTP Verb |    CRUD    |              Description               |
@@ -12,14 +28,14 @@ We have built the first five routes in Express:
 
 <br />
 
-The next four are ones that we will build in our front-end:
+The next four are ones that we will build in our frontend:
 
-|  #  | Action |         URL         | HTTP Verb |   CRUD   |               Description               |
-| :-: | :----: | :-----------------: | :-------: | :------: | :-------------------------------------: |
-|  1  | Index  |     /bookmarks      |    GET    | **R**ead | Get a list (or index) of all bookmarks  |
-|  2  |  Show  |   /bookmarks/:id    |    GET    | **R**ead | Get an individual view (show one color) |
-|  3  |  New   |   /bookmarks/new    |    GET    | **R**ead |    Get a form to create a new color     |
-|  4  |  Edit  | /bookmarks/:id/edit |    GET    | **R**ead |      Get a form to update a color       |
+|  #  | Action |         URL         | HTTP Verb |   CRUD   |                Description                 |
+| :-: | :----: | :-----------------: | :-------: | :------: | :----------------------------------------: |
+|  1  | Index  |     /bookmarks      |    GET    | **R**ead |   Get a list (or index) of all bookmarks   |
+|  2  |  Show  |   /bookmarks/:id    |    GET    | **R**ead | Get an individual view (show one bookmark) |
+|  3  |  New   |   /bookmarks/new    |    GET    | **R**ead |    Get a form to create a new bookmark     |
+|  4  |  Edit  | /bookmarks/:id/edit |    GET    | **R**ead |      Get a form to update a bookmark       |
 
 ## Getting Started
 
