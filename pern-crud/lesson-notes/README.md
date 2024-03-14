@@ -56,9 +56,9 @@ Can you spot the differences? Can you talk about why you think the changes have 
 
 ### Building the Index Page Functionality
 
-```js
-// src/Components/Bookmarks.js
+`src/Components/Bookmarks.js`
 
+```js
 useEffect(() => {
   fetch(`${API}/bookmarks`)
 }, [])
