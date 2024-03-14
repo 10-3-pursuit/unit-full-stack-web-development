@@ -1,5 +1,26 @@
 # PERN Stack: CRUD
 
+We have built the first five routes in Express:
+
+|  #  | Action  |      URL       | HTTP Verb |    CRUD    |              Description               |
+| :-: | :-----: | :------------: | :-------: | :--------: | :------------------------------------: |
+|  1  |  Index  |   /bookmarks   |    GET    |  **R**ead  | Get a list (or index) of all bookmarks |
+|  2  |  Show   | /bookmarks/:id |    GET    |  **R**ead  | Get an individual view (show one log)  |
+|  3  | Create  |   /bookmarks   |   POST    | **C**reate |           Create a new book            |
+|  4  | Destroy | /bookmarks/:id |  DELETE   | **D**elete |             Delete a book              |
+|  5  | Update  | /bookmarks/:id |    PUT    | **U**pdate |             Update a book              |
+
+<br />
+
+The next four are ones that we will build in our front-end:
+
+|  #  | Action |         URL         | HTTP Verb |   CRUD   |               Description               |
+| :-: | :----: | :-----------------: | :-------: | :------: | :-------------------------------------: |
+|  1  | Index  |     /bookmarks      |    GET    | **R**ead | Get a list (or index) of all bookmarks  |
+|  2  |  Show  |   /bookmarks/:id    |    GET    | **R**ead | Get an individual view (show one color) |
+|  3  |  New   |   /bookmarks/new    |    GET    | **R**ead |    Get a form to create a new color     |
+|  4  |  Edit  | /bookmarks/:id/edit |    GET    | **R**ead |      Get a form to update a color       |
+
 ## Getting Started
 
 This build will review how to make:
