@@ -66,24 +66,7 @@ useEffect(() => {
 
 - Now we can make our API call, but `then`, what should happen?
 
-Work from the outside in. Build the outer functions first.
-
-```js
-useEffect(() => {
-  fetch(`${API}/bookmarks/${id}`)
-    .then(() => {})
-    .then(() => {})
-    .catch(() => {})
-}, [])
-```
-
-- What does the first function do?
-- What does the first `.then()` function handle?
-- What does the second `.then()` function handle?
-- What does `.catch()` handle?
-- Why are there two `.then()` functions? Why can't the code be combined into one?
-
-Add the functionality in the right places:
+Add the functionality in the useEffect:
 
 ```js
 useEffect(() => {
@@ -190,18 +173,6 @@ We want to load the bookmark details on page load.
 - Are there any dependencies needed?
 - Is the second argument of `useEffect()` (dependency array), necessary? What happens if you don't include the second argument?
 
-```js
-import { useState, useEffect } from "react";
-
-// inside the BookmarkDetails function....
-
- useEffect(() => {
-},[]);
- return <article>...</article>;
-});
-
-```
-
 We will also require more information from the user to make the API call. We need to know the `id` of the bookmark for the show view. The `id` of the bookmark will come from the URL.
 
 ```js
@@ -217,9 +188,9 @@ function BookmarkDetails() {
  useEffect(() => {
  fetch(`${API}/bookmarks/${id}`)
  .then((response) => response.json())
- .then((responseJSON) => setBookmark(responseJSON))
+ .then((data) => setBookmark(data))
  .catch((error) => console.error(error));
- }, [id, API]);
+ }, [id]);
 ```
 
 Now that it works as expected let's go in and add the actual values where we've put our placeholders.
@@ -233,7 +204,7 @@ return (
     <h5>
       <span>
         <a href={bookmark.url}>{bookmark.name}</a>
-      </span>{' '}
+      </span>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       {bookmark.url}
     </h5>
@@ -241,7 +212,6 @@ return (
     <p>{bookmark.description}</p>
     <div className="showNavigation">
       <div>
-        {' '}
         <Link to={`/bookmarks`}>
           <button>Back</button>
         </Link>
@@ -266,8 +236,9 @@ From this view, we want to be able to delete a bookmark. It's common to name a f
 - What are the pros of creating a generic `handleDelete` function?
 - What are the pros of just having the onClick event call the delete functionality?
 
+`src/boookmarkDetails.jsx`
+
 ```js
-// src/boookmarkDetails.jsx
 const handleDelete = () => {
   console.log('button clicked')
 }
