@@ -24,8 +24,6 @@ The new and edit views are already set up for you.
 VITE_BASE_URL=http://localhost:3003
 ```
 
-- `git add -A`
-- `git commit -m 'add front end starter code'`.
 - `npm start`
 
 ## Index
