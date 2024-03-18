@@ -49,9 +49,7 @@ function Reviews() {
   useEffect(() => {
     fetch(`${API}/bookmarks/${id}/reviews`)
       .then((response) => response.json())
-      .then((response) => {
-        setReviews(response.allReviews)
-      })
+      .then((data) => setReviews(data.allReviews))
   }, [id])
   return (
     <section className="Reviews">
