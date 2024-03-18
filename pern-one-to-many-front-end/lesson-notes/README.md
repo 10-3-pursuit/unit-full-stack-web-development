@@ -135,9 +135,7 @@ const handleAdd = (newReview) => {
     },
   })
     .then((response) => response.json())
-    .then((responseJSON) => {
-      setReviews([responseJSON, ...reviews])
-    })
+    .then((data) => setReviews([data, ...reviews]))
     .catch((error) => console.error('catch', error))
 }
 ```
