@@ -154,7 +154,6 @@ function ReviewForm({
     if (reviewDetails) {
       handleEdit(newOrUpdatedReview, id)
     } else {
-      console.log(newOrUpdatedReview)
       handleAdd(newOrUpdatedReview)
     }
 
