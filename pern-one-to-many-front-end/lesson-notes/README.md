@@ -51,6 +51,7 @@ function Reviews() {
       .then((response) => response.json())
       .then((data) => setReviews(data.allReviews))
   }, [id])
+
   return (
     <section className="Reviews">
       {reviews.map((review) => (
