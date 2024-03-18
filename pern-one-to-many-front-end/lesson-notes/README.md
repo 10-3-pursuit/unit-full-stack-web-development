@@ -110,7 +110,7 @@ Additionally, we will reuse this form for new and editing bookmarks.
 
 In the interest of time during the lecture, let's copy-paste this code and discuss what is going on.
 
-We want to be able to pre-fill the data if it is the edit form. We can `useEffect()` to check if data is being passed down and update the form inputs.
+If we are editing a form, want to be able to pre-fill the data if it is the edit form. We can `useEffect()` to check if data is being passed down and update the form inputs.
 
 If it is the new form, we want to display an extra `h3` to inform the users this is the form to create a new review. We will do this by using `children` to display this additional `h3`.
 
