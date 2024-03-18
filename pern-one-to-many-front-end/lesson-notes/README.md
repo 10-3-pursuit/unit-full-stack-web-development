@@ -145,7 +145,7 @@ function ReviewForm({
     if (reviewDetails) {
       setNewOrUpdatedReview(reviewDetails)
     }
-  }, [id, reviewDetails])
+  }, [reviewDetails])
 
   const handleSubmit = (event) => {
     event.preventDefault()
