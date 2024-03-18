@@ -50,9 +50,9 @@ function Reviews() {
     fetch(`${API}/bookmarks/${id}/reviews`)
       .then((response) => response.json())
       .then((response) => {
-        setReviews(response.reviews)
+        setReviews(response.allReviews)
       })
-  }, [id, API])
+  }, [id])
   return (
     <section className="Reviews">
       {reviews.map((review) => (
@@ -301,7 +301,7 @@ And that should be it! A one-to-many relationship is one way to do full CRUD on 
 
 ### Bonus
 
-Those ratings numbers are boring. Can you figure out a way to display teh correct number of star emojis ⭐️ to represent ratings?
+Those ratings numbers are boring. Can you figure out a way to display the correct number of star emojis ⭐️ to represent ratings?
 
 ## New Bookmarks Bonus Challenges/Lab time
 
