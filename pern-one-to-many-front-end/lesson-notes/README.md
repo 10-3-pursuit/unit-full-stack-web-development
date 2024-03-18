@@ -150,7 +150,7 @@ const handleAdd = (newReview) => {
 return (
   <section className="Reviews">
     <h2>Reviews</h2>
-    <ReviewForm handleSubmit={handleAdd}>
+    <ReviewForm handleAdd={handleAdd}>
       <h3>Add a New Review</h3>
     </ReviewForm>
     {reviews.map((review) => (
@@ -240,7 +240,7 @@ Pass it to the `Review` component
 <Review
   key={review.id}
   review={review}
-  handleSubmit={handleEdit}
+  handleEdit={handleEdit}
   handleDelete={handleDelete}
 />
 ```
@@ -260,7 +260,7 @@ The way we will approach this is to add a button to edit. This will toggle the v
 // Components/Review.jsx
 import { useState } from 'react'
 import ReviewForm from './ReviewForm'
-function Review({ review, handleDelete, handleSubmit }) {
+function Review({ review, handleDelete, handleEdit }) {
   const [viewEditForm, setEditForm] = useState(false)
   const toggleView = () => {
     setEditForm(!viewEditForm)
@@ -271,7 +271,7 @@ function Review({ review, handleDelete, handleSubmit }) {
         <ReviewForm
           reviewDetails={review}
           toggleView={toggleView}
-          handleSubmit={handleSubmit}
+          handleEdit={handleEdit}
         />
       ) : (
         <div>
